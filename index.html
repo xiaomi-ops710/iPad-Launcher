@@ -246,6 +246,55 @@ input::placeholder{color:rgba(255,255,255,.6)}
 .ain textarea::placeholder{color:#9aa0a6}.abr{display:flex;align-items:center;gap:8px}
 .apill{border:1px solid #444746!important;border-radius:24px;padding:0 20px;height:48px;font-size:17px}
 .aci{width:52px;height:52px;border-radius:50%;border:1px solid #444746!important;display:grid;place-items:center;flex:none}.aci.f{background:#3a3b3f!important;border-color:#3a3b3f!important}
+
+/* 小さいウィジェット (1×n / n×1) */
+.gwrap.sm>.wg{padding:8px!important;gap:2px!important;border-radius:20px}
+.sm .wd em,.sm .wx span:nth-child(n+4),.sm .ai3 .gl,.sm .ai3 .fld,.sm .gs3 .chips,.sm .gs3 .fld input,.sm .gs3 #glens,.sm .cg3,.sm .td3 .fld,.sm .fvw small,.sm .glogo{display:none}
+.sm .ai3{align-items:center;justify-content:center}.sm .ai3 .ah3 span{display:none}.sm .ai3 .ah3 .ib{display:none}
+.sm .wx .t{font-size:26px}.sm .gs3 .fld{height:40px;padding:0 4px 0 10px;justify-content:center}
+.sm .cc{padding:4px!important}.sm .cad{font-size:16px}.sm .cb button{font-size:10px;border-radius:5px}
+.sm .fvg{gap:2px}.sm .fv span{display:none}.sm .mh3 .mt{font-size:20px}
+/* Androidモード (Material 3) */
+#asb{display:none}
+.and .ic{border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,.35)}.and .ic::before,.and .ic::after,.and .glass::before,.and .glass::after{display:none}
+.and .app span{font-size:12px;font-family:"Google Sans",Roboto,"Noto Sans JP",system-ui,sans-serif}
+.and .glass{background:rgba(30,31,32,.88);backdrop-filter:none;-webkit-backdrop-filter:none;border:0;box-shadow:0 1px 3px rgba(0,0,0,.3),0 2px 8px 2px rgba(0,0,0,.15)}
+.and .wg.glass{border-radius:28px;color:#e3e3e3}.and .ft.glass{background:rgba(232,234,237,.2);border-radius:28%}
+.and #dock,.and #dots{background:none;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none}
+.and #dock{bottom:calc(84px + env(safe-area-inset-bottom,0px))}.and #dots{bottom:calc(196px + env(safe-area-inset-bottom,0px))}
+.and #asb{display:flex;position:fixed;left:50%;transform:translateX(-50%);bottom:calc(18px + env(safe-area-inset-bottom,0px));width:min(720px,90vw);height:56px;align-items:center;gap:12px;padding:0 22px;border-radius:28px;background:#303134;color:#e3e3e3;z-index:4;box-shadow:0 2px 6px rgba(0,0,0,.35)}
+#asq{flex:1;min-width:0;background:none;border:0;outline:0;color:#e3e3e3;font:inherit;font-size:16px;-webkit-user-select:text;user-select:text}#asq::placeholder{color:#9aa0a6}
+
+/* Pixel風 検索バー & テーマアイコン */
+.and{--ti-bg:#2c4f52;--ti-fg:#a6eef0;--dk:#1b2f31}
+.and .ic{background:var(--ti-bg)!important;color:transparent!important;text-shadow:0 0 0 var(--ti-fg);font-size:calc(var(--is)*.46)}
+.and .ic img{width:56%;height:56%;object-fit:contain;filter:grayscale(1) brightness(1.5) contrast(.9);mix-blend-mode:screen}
+.and #dock{background:var(--dk)!important;border-radius:999px;padding:10px 22px;box-shadow:0 2px 10px rgba(0,0,0,.4)}
+.and .app:active .ic{transform:scale(.92)}
+.and #asb{gap:10px;padding:12px;height:auto;width:min(780px,92vw);border-radius:44px;background:rgba(150,200,190,.16);box-shadow:none;color:var(--ti-fg)}
+#asb .asf{flex:1;min-width:0;height:56px;display:flex;align-items:center;gap:10px;padding:0 14px 0 18px;border-radius:28px;background:var(--ti-bg)}
+#asb .asf input{flex:1;min-width:0;height:100%;background:none;border:0;outline:0;color:#e3f4f4;font:inherit;font-size:16px}
+#asb button{width:42px;height:42px;border-radius:50%;border:0;background:none;color:var(--ti-fg);display:grid;place-items:center;cursor:pointer;padding:0;flex:none}
+#asb button:active{background:rgba(255,255,255,.14)}
+#asb .aim{width:56px;height:56px;background:var(--ti-bg)}
+
+/* Gemini ウィジェット（4ボタン） */
+.wg.gt{display:block;padding:10px;border-radius:34px;background:linear-gradient(160deg,#252527,#121214);border:1px solid rgba(255,255,255,.1);box-shadow:0 8px 24px rgba(0,0,0,.4);container-type:size;color:#fff}
+.gtg{width:100%;height:100%;display:grid;grid-template:1fr 1fr/1fr 1fr;gap:10px}
+@container (min-aspect-ratio:2/1){.gtg{grid-template:1fr/repeat(4,1fr)}}
+.gt button{border:0;border-radius:999px;background:rgba(255,255,255,.07);color:#fff;display:grid;place-items:center;cursor:pointer;min-width:0;min-height:0;padding:0}
+.gt button:active{background:rgba(255,255,255,.16)}.gt .gta{background:none;border:1.5px solid rgba(255,255,255,.75)}
+/* iPad: M3系ウィジェットもLiquid Glassに */
+body:not(.and) .m3{--m-sch:rgba(255,255,255,.16);--m-on:#fff;--m-onv:rgba(255,255,255,.72);--m-p:#5ac8ff;--m-onp:#00263a}
+body:not(.and) .wg.m3.glass{background:linear-gradient(135deg,rgba(255,255,255,.2),rgba(255,255,255,.04) 55%,rgba(255,255,255,.12));border:1px solid rgba(255,255,255,.12);border-radius:26px;box-shadow:inset 0 1.5px 1px rgba(255,255,255,.55),inset 0 -1.5px 1px rgba(255,255,255,.2),0 14px 44px rgba(0,0,0,.4)}
+/* Android: Material You配色 */
+.and .m3{--m-sc:var(--dk);--m-sch:var(--ti-bg);--m-p:var(--ti-fg);--m-onp:#00373a;--m-on:#d5f3f0;--m-onv:#a4c9c9}
+.and .wg.glass{background:var(--dk);color:#d5f3f0;border-radius:32px}.and .wx .t,.and .wd b{color:var(--ti-fg)}
+/* Android: 検索バー左下・ドック右下 */
+.and #asb{left:24px;transform:none;bottom:calc(14px + env(safe-area-inset-bottom,0px));width:min(46vw,460px)}
+.and #dock{left:auto;right:24px;transform:none;bottom:calc(14px + env(safe-area-inset-bottom,0px));max-width:calc(100vw - min(46vw,460px) - 72px)}
+.and #dots{bottom:calc(112px + env(safe-area-inset-bottom,0px))}
+@media(max-width:760px){.and #asb{left:50%;transform:translateX(-50%);width:92vw;bottom:calc(18px + env(safe-area-inset-bottom,0px))}.and #dock{left:50%;right:auto;transform:translateX(-50%);max-width:96vw;bottom:calc(96px + env(safe-area-inset-bottom,0px))}.and #dots{bottom:calc(208px + env(safe-area-inset-bottom,0px))}}
 </style></head><body>
 <div class="wall" id="wall"><svg viewBox="0 0 1000 700" preserveAspectRatio="none"><defs><filter id="bl"><feGaussianBlur stdDeviation="2.5"/></filter></defs><g fill="none" stroke="rgba(90,190,255,.55)" stroke-width="2.5" filter="url(#bl)"><path d="M180 -20C330 90 380 300 250 520S60 700 0 740"/><path d="M640 -20C820 60 900 220 760 420S560 640 520 730"/><path d="M1040 120C880 260 830 420 720 560" stroke-opacity=".6"/></g><g fill="none" stroke="rgba(150,220,255,.18)" stroke-width="14"><path d="M180 -20C330 90 380 300 250 520S60 700 0 740"/><path d="M640 -20C820 60 900 220 760 420S560 640 520 730"/></g></svg></div>
 
@@ -254,6 +303,7 @@ input::placeholder{color:rgba(255,255,255,.6)}
 <div class="tb"><div><button class="pill glass" id="add">＋ 追加</button><button class="pill glass" id="addw">＋ ウィジェット</button></div><div><label class="sz glass">サイズ<input type="range" id="sz" min="70" max="140" value="100"></label><button class="pill glass" id="wp">壁紙</button><input type="file" id="wpf" accept="image/*" hidden><button class="pill glass" id="wl">設定</button><button class="pill glass" id="dt">データ</button><button class="pill glass" id="done">完了 ✓</button></div></div>
 
 <div id="pages"></div>
+<div id="asb"></div>
 <div id="dots" class="glass"></div>
 <div id="dock" class="glass"></div>
 
@@ -433,8 +483,8 @@ const WCAT=[
   {t:'todo',w:4,h:4,n:'ToDo (大)',d:'たくさんのやることを一覧できます。'}]},
  {n:'電卓',e:'＝',b:'linear-gradient(160deg,#ffb340,#ff9f0a)',v:[{t:'calc',w:2,h:2,n:'電卓',d:'四則演算ができる電卓です。'},{t:'calc',w:4,h:4,n:'電卓 (大)',d:'大きな電卓です。'}]},
  {n:'AIチャット',e:'✦',b:'linear-gradient(135deg,#4285f4,#9b72cb,#d96570)',v:[
-  {t:'gemini',w:4,h:4,n:'AIチャット',d:'Gemini APIで会話できます。設定でAPIキーを入力してください。'},
-  {t:'gemini',w:4,h:2,n:'AIチャット (横長)',d:'コンパクトなAIチャットです。'}]},
+  {t:'gemini',w:2,h:2,n:'Gemini',d:'Geminiを全画面で開くショートカットです。'},
+  {t:'gemini',w:4,h:2,n:'Gemini (横長)',d:'横長のショートカットです。'}]},
  {n:'メモ',e:'📝',b:'linear-gradient(160deg,#ffd60a,#ff9f0a)',v:[
   {t:'memo',w:2,h:2,n:'メモ (小)',d:'自動保存されるメモです。'},{t:'memo',w:4,h:2,n:'メモ',d:'自動保存されるメモです。'},{t:'memo',w:4,h:4,n:'メモ (大)',d:'広く書ける、自動保存のメモです。'}]},
  {n:'ブックマーク',e:'★',b:'linear-gradient(160deg,#ff9f0a,#ff375f)',v:[
@@ -443,7 +493,7 @@ function plan(cols,rows){const pgs=[],mk=()=>({o:Array.from({length:rows},()=>Ar
  fit=(o,w,h)=>{for(let r=0;r+h<=rows;r++)for(let c=0;c+w<=cols;c++)if(o.slice(r,r+h).every(x=>x.slice(c,c+w).every(v=>!v)))return[c,r]};
  if(S.o.wg)(S.wl||[]).filter(x=>WGS[x.t]).forEach(x=>{const w=Math.min(x.w,cols),h=Math.min(x.h,rows);let p=pgs.find(q=>fit(q.o,w,h));if(!p){p=mk();pgs.push(p)}const t=fit(p.o,w,h);
   for(let r=t[1];r<t[1]+h;r++)for(let c=t[0];c<t[0]+w;c++)p.o[r][c]=1;p.w.push([x.u,x.t,t[0],t[1],w,h]);p.f-=w*h});return pgs}
-const WGP=p=>p?p.w.map(([u,id,c,r,w,h])=>`<div class="gwrap" data-u="${u}" style="grid-column:${c+1}/span ${w};grid-row:${r+1}/span ${h};--k:${h>=4?1.3:1}">${WGS[id](w,h)}<button class="mn" data-wx="${u}" aria-label="ウィジェットを削除">−</button><button class="rz" aria-label="サイズ変更">⤡</button></div>`).join(''):'';
+const WGP=p=>p?p.w.map(([u,id,c,r,w,h])=>`<div class="gwrap${w<2||h<2?' sm':''}" data-u="${u}" style="grid-column:${c+1}/span ${w};grid-row:${r+1}/span ${h};--k:${h>=4?1.3:w<2||h<2?.8:1}">${WGS[id](w,h)}<button class="mn" data-wx="${u}" aria-label="ウィジェットを削除">−</button><button class="rz" aria-label="サイズ変更">⤡</button></div>`).join(''):'';
 function migr(){if(!Array.isArray(S.wl)){const sz={date:[2,2],dclock:[2,2],aclock:[2,2],weather:[2,2],clockapp:[4,2],calendar:[2,2],todo:[2,2],calc:[2,2],fav:[4,2],gemini:[4,4],gsearch:[4,2],memo:[4,2]};S.wl=(S.o.ws||[]).filter(t=>sz[t]).map(t=>({u:Math.random().toString(36).slice(2,8),t,w:sz[t][0],h:sz[t][1]}));save()}}
 /* 時計アプリ */
 const p2=n=>String(n).padStart(2,'0'),fmt=s=>{s=Math.max(0,Math.ceil(s));return(s>=3600?(s/3600|0)+':'+p2(s%3600/60|0):(s/60|0))+':'+p2(s%60)},swF=ms=>p2(ms/6e4|0)+':'+p2(ms/1e3%60|0)+'.'+p2(ms/10%100|0);
@@ -486,12 +536,12 @@ const WGS={
  dclock:()=>`<div class="wl"><svg viewBox="-50 -50 100 100">${[...Array(60)].map((_,i)=>{const[a,b]=sqp(i,47),[c,d]=sqp(i,43);return`<line class="t" x1="${a.toFixed(1)}" y1="${b.toFixed(1)}" x2="${c.toFixed(1)}" y2="${d.toFixed(1)}" stroke-width="1.4" stroke-linecap="round" stroke="#bbb"/>`}).join('')}<text class="dt" x="0" y="0" text-anchor="middle" dominant-baseline="central" font-size="34" font-weight="900" font-family="'Arial Narrow','Helvetica Neue Condensed',Impact,sans-serif" lengthAdjust="spacingAndGlyphs" textLength="62" fill="#111"></text></svg></div>`,
  aclock:()=>`<div class="wl"><svg viewBox="-50 -50 100 100">${[...Array(60)].map((_,i)=>{const h=i%5==0,[a,b]=sqp(i,47),[c,d]=sqp(i,h?38:43);return`<line x1="${a.toFixed(1)}" y1="${b.toFixed(1)}" x2="${c.toFixed(1)}" y2="${d.toFixed(1)}" stroke="${h?'#111':'#bbb'}" stroke-width="${h?1.8:1}" stroke-linecap="round"/>`}).join('')}${[['12',0,-27],['3',27,0],['6',0,27],['9',-27,0]].map(([t,x,y])=>`<text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="central" font-size="11" font-weight="700" font-family="-apple-system,sans-serif" fill="#111">${t}</text>`).join('')}<line class="hh" y1="4" y2="-22" stroke="#111" stroke-width="3.4" stroke-linecap="round"/><line class="mh" y1="4" y2="-34" stroke="#111" stroke-width="2.6" stroke-linecap="round"/><line class="sh" y1="9" y2="-38" stroke="#f5a623" stroke-width="1"/><circle r="2.4" fill="#fff" stroke="#f5a623" stroke-width="1.2"/></svg></div>`,
  weather:()=>'<div class="wg wx glass" id="wxc"></div>',
- gemini:()=>`<div class="wg m3 ai3"><div class="ah3"><b class="sp">${MI(MP.spark,20)}</b><span>AIチャット</span><span style="flex:1"></span><button class="ib" id="gclr" aria-label="新しいチャット">${MI(MP.add)}</button></div><div class="gl" id="gl"></div><div class="fld"><input id="gq" placeholder="AIに聞く" autocomplete="off"><button class="ib fab" id="gsend" aria-label="送信">${MI(MP.send)}</button></div></div>`,
- gsearch:(w)=>{const n=w<4,C=[['#4285f4','G'],['#ea4335','o'],['#fbbc05','o'],['#4285f4','g'],['#34a853','l'],['#ea4335','e']];return`<div class="wg m3 gs3"><div class="fld"><b class="glogo">${(n?C.slice(0,1):C).map(([c,t])=>`<i style="color:${c}">${t}</i>`).join('')}</b><input id="gsq" placeholder="検索" autocomplete="off"><button class="ib" id="gmic" aria-label="音声検索">${MI(MP.mic)}</button>${n?'':`<button class="ib" id="glens" aria-label="Googleレンズ">${MI(MP.cam)}</button>`}</div><div class="chips">${[[MP.img,'画像','https://www.google.com/imghp'],[MP.tr,'翻訳','https://translate.google.com'],[MP.news,'ニュース','https://news.google.com'],[MP.pin,'マップ','https://maps.google.com']].map(([p,t,u])=>`<a class="chip" href="${u}" target="_blank" rel="noopener noreferrer">${MI(p,18)}${t}</a>`).join('')}</div></div>`},
+ gemini:()=>`<div class="wg gt"><div class="gtg"><button data-gt="ai" class="gta" aria-label="Geminiを開く"><svg width="38" height="38" viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="gsg" x1="3" y1="21" x2="21" y2="3" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#4285f4"/><stop offset=".35" stop-color="#ea4335"/><stop offset=".65" stop-color="#fbbc05"/><stop offset="1" stop-color="#34a853"/></linearGradient></defs><path fill="url(#gsg)" d="M12 2c.6 5.4 4.6 9.4 10 10-5.4.6-9.4 4.6-10 10-.6-5.4-4.6-9.4-10-10 5.4-.6 9.4-4.6 10-10z"/></svg></button><button data-gt="mic" aria-label="音声入力">${MI(MP.mic,30)}</button><button data-gt="cam" aria-label="カメラ">${MI(MP.cam,30)}</button><button data-gt="live" aria-label="新しいチャット"><svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor"><path d="M11 3h2v18h-2zM6 8h2v8H6zm10 0h2v8h-2zM1 11h2v2H1zm20 0h2v2h-2z"/></svg></button></div></div>`,
+ gsearch:(w)=>{const n=w<4,C=[['#4285f4','G'],['#ea4335','o'],['#fbbc05','o'],['#4285f4','g'],['#34a853','l'],['#ea4335','e']];return`<div class="wg m3 glass gs3"><div class="fld"><b class="glogo">${(n?C.slice(0,1):C).map(([c,t])=>`<i style="color:${c}">${t}</i>`).join('')}</b><input id="gsq" placeholder="検索" autocomplete="off"><button class="ib" id="gmic" aria-label="音声検索">${MI(MP.mic)}</button>${n?'':`<button class="ib" id="glens" aria-label="Googleレンズ">${MI(MP.cam)}</button>`}</div><div class="chips">${[[MP.img,'画像','https://www.google.com/imghp'],[MP.tr,'翻訳','https://translate.google.com'],[MP.news,'ニュース','https://news.google.com'],[MP.pin,'マップ','https://maps.google.com']].map(([p,t,u])=>`<a class="chip" href="${u}" target="_blank" rel="noopener noreferrer">${MI(p,18)}${t}</a>`).join('')}</div></div>`},
  memo:()=>`<div class="wg glass"><textarea id="wm" placeholder="メモ（自動保存）">${esc(S.memo||'')}</textarea></div>`,
  clockapp:()=>`<div class="wg ck glass" id="ckw">${ckIn()}</div>`,
- calendar:()=>{const n=new Date(),d=new Date(n.getFullYear(),n.getMonth()+CALM,1),y=d.getFullYear(),m=d.getMonth(),f=d.getDay(),len=new Date(y,m+1,0).getDate(),now=CALM==0;return`<div class="wg m3 cal3"><div class="mh3"><div><div class="ml">${y}年</div><div class="mt">${m+1}月</div></div><span style="flex:1"></span><button class="ib" data-cal="-1" aria-label="前の月">${MI(MP.prev)}</button><button class="ib" data-cal="1" aria-label="次の月">${MI(MP.next)}</button></div><div class="cg3">${[...'日月火水木金土'].map(c=>`<i class="dw">${c}</i>`).join('')}${'<i></i>'.repeat(f)}${Array.from({length:len},(_,i)=>`<i class="${now&&i+1==n.getDate()?'today':''}">${i+1}</i>`).join('')}</div></div>`},
- todo:()=>`<div class="wg m3 td3"><div class="th3">ToDo</div><div class="tl3">${(S.todo||[]).map((x,i)=>`<label class="ti${x.d?' dn':''}"><input type="checkbox" data-td="${i}" ${x.d?'checked':''}><span>${esc(x.t)}</span><button class="ib sm" data-tx="${i}" aria-label="削除">${MI(MP.close,18)}</button></label>`).join('')||'<div class="em3">タスクはありません</div>'}</div><div class="fld sm"><input id="tdi" placeholder="タスクを追加" autocomplete="off"><button class="ib fab" id="tda" aria-label="追加">${MI(MP.add)}</button></div></div>`,
+ calendar:()=>{const n=new Date(),d=new Date(n.getFullYear(),n.getMonth()+CALM,1),y=d.getFullYear(),m=d.getMonth(),f=d.getDay(),len=new Date(y,m+1,0).getDate(),now=CALM==0;return`<div class="wg m3 glass cal3"><div class="mh3"><div><div class="ml">${y}年</div><div class="mt">${m+1}月</div></div><span style="flex:1"></span><button class="ib" data-cal="-1" aria-label="前の月">${MI(MP.prev)}</button><button class="ib" data-cal="1" aria-label="次の月">${MI(MP.next)}</button></div><div class="cg3">${[...'日月火水木金土'].map(c=>`<i class="dw">${c}</i>`).join('')}${'<i></i>'.repeat(f)}${Array.from({length:len},(_,i)=>`<i class="${now&&i+1==n.getDate()?'today':''}">${i+1}</i>`).join('')}</div></div>`},
+ todo:()=>`<div class="wg m3 glass td3"><div class="th3">ToDo</div><div class="tl3">${(S.todo||[]).map((x,i)=>`<label class="ti${x.d?' dn':''}"><input type="checkbox" data-td="${i}" ${x.d?'checked':''}><span>${esc(x.t)}</span><button class="ib sm" data-tx="${i}" aria-label="削除">${MI(MP.close,18)}</button></label>`).join('')||'<div class="em3">タスクはありません</div>'}</div><div class="fld sm"><input id="tdi" placeholder="タスクを追加" autocomplete="off"><button class="ib fab" id="tda" aria-label="追加">${MI(MP.add)}</button></div></div>`,
  calc:()=>`<div class="wg cc glass"><div class="cad" id="cad">${CA.s=='NaN'?'エラー':CA.s}</div><div class="cb">${['C','±','%','÷','7','8','9','×','4','5','6','−','1','2','3','+','0','.','='].map(k=>`<button data-cb="${k}" class="${'÷×−+='.includes(k)?'o':''}${k=='0'?' z':''}">${k}</button>`).join('')}</div></div>`,
  fav:(w,h)=>`<div class="wg fvw glass"><small>よく使うサイト</small><div class="fvg">${S.items.filter(b=>!b.hid).sort((a,b)=>b.n-a.n).slice(0,h>=4?16:8).map(b=>`<a class="fv" href="${esc(b.url)}" target="_blank" rel="noopener noreferrer">${ic(b)}<span>${esc(b.title)}</span></a>`).join('')}</div></div>`};
 function tickClk(){const d=new Date(),sc=d.getSeconds()+d.getMilliseconds()/1000,mi=d.getMinutes()+sc/60,h=d.getHours()%12+mi/60,v=d.getHours()+':'+String(d.getMinutes()).padStart(2,'0');
@@ -518,15 +568,15 @@ function chatDraw(x){const l=$('#gl');if(!l)return;l.innerHTML=chatH()+(x?bb({r:
 document.addEventListener('click',async e=>{if(e.target.closest('#gclr')){S.chat=[];save();chatDraw();return}if(!e.target.closest('#gsend'))return;const q=$('#gq'),m=q.value.trim();if(!m)return;
  if(!S.o.gk){chatDraw('設定でGemini APIキーを入力してください。');return}
  q.value='';const c=S.chat=S.chat||[];c.push({r:'u',t:m});chatDraw('…');
- try{const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(S.o.gm||'gemini-2.5-flash')}:generateContent`,{method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':S.o.gk},body:JSON.stringify({contents:c.slice(-10).map(x=>({role:x.r=='u'?'user':'model',parts:[{text:x.t}]}))})}),j=await r.json();
+ try{const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(S.o.gm||'gemini-2.5-flash')}:generateContent`,{method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':S.o.gk},body:JSON.stringify({contents:c.slice(-10).map(x=>({role:x.r=='u'?'user':'model',parts:[{text:x.t},...(img&&x===c.m[c.m.length-1]?[{inlineData:img}]:[])]}))})}),j=await r.json();
   if(!r.ok)throw Error(j.error&&j.error.message||r.status);c.push({r:'a',t:(((j.candidates||[])[0]||{}).content||{parts:[]}).parts.map(p=>p.text).join('')||'（応答なし）'});S.chat=c.slice(-40);save();chatDraw()}
  catch(x){c.pop();chatDraw(x instanceof TypeError?'通信できません（オフライン、または通信が制限されたページです）':'エラー: '+x.message);const q2=$('#gq');if(q2)q2.value=m}});
 document.addEventListener('keydown',e=>{if(e.target.id=='gq'&&e.key=='Enter'&&!e.isComposing)$('#gsend').click()});
 document.addEventListener('input',e=>{if(e.target.id=='wm'){S.memo=e.target.value;clearTimeout(window._m);window._m=setTimeout(save,400)}});
 function applyWall(){const w=$('#wall');if(S.wimg){w.classList.add('img');w.style.backgroundImage=`url(${S.wimg})`;w.style.filter=''}else{w.classList.remove('img');w.style.backgroundImage='';w.style.filter=`hue-rotate(${[0,75,160,-60,110,-130][S.wall%6]}deg)`}}
-function applyOpts(){const o=S.o,r=document.documentElement.style,b=document.body.classList;r.setProperty('--bl',o.bl+'px');r.setProperty('--gl',o.gl/100);b.toggle('nolb',!o.lb);b.toggle('noan',!o.an);applyWall()}
+function applyOpts(){const o=S.o,r=document.documentElement.style,b=document.body.classList;r.setProperty('--bl',o.bl+'px');r.setProperty('--gl',o.gl/100);b.toggle('nolb',!o.lb);b.toggle('noan',!o.an);b.toggle('and',!!o.and);applyWall()}
 function drawSet(){const o=S.o,chk=(k,t)=>`<label class="tg"><span>${t}</span><input type="checkbox" data-o="${k}" ${o[k]?'checked':''}></label>`,rg=(k,t,a,b)=>`<label>${t}</label><input type="range" data-o="${k}" min="${a}" max="${b}" value="${o[k]}" style="width:100%;accent-color:#5ac8ff">`;
- $('#gs').innerHTML=`<h3>設定</h3>${chk('lb','アイコン名を表示')}${chk('rec','ドックにおすすめを表示')}${chk('wg','ウィジェットを表示')}<div class="hint" style="padding:10px 0 2px;text-align:left">ウィジェットは「ホーム画面を編集」→「＋ ウィジェット」から追加・削除できます。</div>
+ $('#gs').innerHTML=`<h3>設定</h3>${chk('and','Androidモード（Material 3）')}${chk('lb','アイコン名を表示')}${chk('rec','ドックにおすすめを表示')}${chk('wg','ウィジェットを表示')}<div class="hint" style="padding:10px 0 2px;text-align:left">ウィジェットは「ホーム画面を編集」→「＋ ウィジェット」から追加・削除できます。</div>
  <label>天気の都市（例: 市川市 / Tokyo）</label><input type="text" data-o="city" value="${esc(o.city)}"><label>AIチャット用 Gemini APIキー（このブラウザにのみ保存）</label><input type="password" data-o="gk" value="${esc(o.gk)}" autocomplete="off"><label>Geminiのモデル名</label><input type="text" data-o="gm" value="${esc(o.gm)}"><label>非表示フォルダのPIN${o.pin?'（設定済み）':''}・空欄で解除</label><input type="password" data-o="pinset" inputmode="numeric" autocomplete="off" placeholder="4桁以上の数字">${chk('an','アニメーション')}${rg('bl','ガラスのぼかし',0,40)}${rg('gl','ガラスの反射の強さ',0,150)}
  <label>検索エンジン</label><select data-o="se">${Object.keys(SE).map(k=>`<option ${o.se==k?'selected':''}>${k}</option>`).join('')}</select>
  <label>壁紙</label><div class="sw">${[0,1,2,3,4,5].map(i=>`<b data-w="${i}" style="background:hsl(${200+[0,75,160,-60,110,-130][i]},70%,40%)" class="${!S.wimg&&S.wall%6==i?'on':''}"></b>`).join('')}</div>
@@ -635,7 +685,7 @@ document.addEventListener('pointerdown',e=>{const g=e.target.closest('.gwrap');i
 document.addEventListener('pointerdown',e=>{const b=e.target.closest('.rz');if(!b)return;e.preventDefault();e.stopPropagation();
  const g=b.closest('.gwrap'),it=S.wl.find(x=>x.u==g.dataset.u);if(!it)return;const r=g.getBoundingClientRect(),c0=parseInt(g.style.gridColumn)-1,r0=parseInt(g.style.gridRow)-1,x0=e.clientX,y0=e.clientY;let w=it.w,h=it.h;
  g.classList.add('rs');b.setPointerCapture(e.pointerId);
- b.onpointermove=ev=>{w=Math.max(2,Math.min(8-c0,Math.round((r.width+12+ev.clientX-x0)/LAY.cw)));h=Math.max(2,Math.min(5-r0,Math.round((r.height+12+ev.clientY-y0)/LAY.rh)));g.style.gridColumn=(c0+1)+'/span '+w;g.style.gridRow=(r0+1)+'/span '+h};
+ b.onpointermove=ev=>{w=Math.max(1,Math.min(8-c0,Math.round((r.width+12+ev.clientX-x0)/LAY.cw)));h=Math.max(1,Math.min(5-r0,Math.round((r.height+12+ev.clientY-y0)/LAY.rh)));g.style.gridColumn=(c0+1)+'/span '+w;g.style.gridRow=(r0+1)+'/span '+h};
  b.onpointerup=b.onpointercancel=()=>{b.onpointermove=b.onpointerup=b.onpointercancel=null;it.w=w;it.h=h;save();render()}});
 /* Gemini フルスクリーンアプリ */
 const GP={menu:'M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z',pen:'M3 21h3.75L17.81 9.94l-3.75-3.75L3 17.25V21zM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z',pin:'M16 9V4h1c.55 0 1-.45 1-1s-.45-1-1-1H7c-.55 0-1 .45-1 1s.45 1 1 1h1v5c0 1.66-1.34 3-3 3v2h5.97v7l1 1 1-1v-7H19v-2c-1.66 0-3-1.34-3-3z',tune:'M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z',wave:'M7 18h2V6H7v12zm4 4h2V2h-2v20zm-8-8h2v-4H3v4zm12 4h2V6h-2v12zm4-8v4h2v-4h-2z'},
@@ -653,17 +703,17 @@ function gDraw(x){const el=$('#gapp');if(!el)return;const c=gCur(),gem=GEMS[GA.g
  <div class="abd" id="abd">${ms.length||x?`<div class="acol">${ms.map(m=>`<div class="amsg ${m.r}">${esc(m.t)}</div>`).join('')}${x?`<div class="amsg">${esc(x)}</div>`:''}</div>`:`<div class="acol"><div class="ahero"><small>${esc(S.o.gn||'雄大')} さん</small><h1>何から始めますか？</h1>${GCH.map(([e,t],i)=>`<button class="achip" data-gch="${i}">${e} ${t}</button>`).join('')}</div></div>`}</div>
  <div class="ain"><textarea id="gaq" rows="1" placeholder="Gemini に相談"></textarea><div class="abr"><button class="aib" data-ga="new" aria-label="新規">${MI(MP.add,28)}</button><button class="aib" aria-label="ツール">${MI(GP.tune)}</button><span style="flex:1"></span><button class="apill" data-ga="pro">${GA.pro?'思考モード':'高速モード'}</button><button class="aci" data-ga="mic" aria-label="音声入力">${MI(MP.mic)}</button><button class="aci f" data-ga="send" aria-label="送信">${MI(GP.wave)}</button></div></div></main>`;
  const b=$('#abd');b.scrollTop=b.scrollHeight}
-async function gSend(m){m=(m||'').trim();if(!m||GA.busy)return;let c=gCur();if(!c){c={id:Date.now().toString(36),t:m.slice(0,24),g:GA.gem,m:[]};(S.gc=S.gc||[]).unshift(c);GA.id=c.id}
- c.m.push({r:'u',t:m});const fail=t=>{c.m.pop();if(!c.m.length){S.gc=S.gc.filter(y=>y!=c);GA.id=null}gDraw(t);const q=$('#gaq');if(q)q.value=m};
+async function gSend(m,img){m=(m||'').trim();if(!m||GA.busy)return;let c=gCur();if(!c){c={id:Date.now().toString(36),t:m.slice(0,24),g:GA.gem,m:[]};(S.gc=S.gc||[]).unshift(c);GA.id=c.id}
+ c.m.push({r:'u',t:(img?'📷 ':'')+m});const fail=t=>{c.m.pop();if(!c.m.length){S.gc=S.gc.filter(y=>y!=c);GA.id=null}gDraw(t);const q=$('#gaq');if(q)q.value=m};
  if(!S.o.gk){fail('設定でGemini APIキーを入力してください。');return}
  GA.busy=1;gDraw('…');
  try{const g=GEMS[c.g],r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${GA.pro?'gemini-2.5-pro':encodeURIComponent(S.o.gm||'gemini-2.5-flash')}:generateContent`,{method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':S.o.gk},body:JSON.stringify({...(g?{systemInstruction:{parts:[{text:g[1]}]}}:{}),contents:c.m.slice(-20).map(x=>({role:x.r=='u'?'user':'model',parts:[{text:x.t}]}))})}),j=await r.json();
   if(!r.ok)throw Error(j.error&&j.error.message||r.status);c.m.push({r:'a',t:(((j.candidates||[])[0]||{}).content||{parts:[]}).parts.map(p=>p.text).join('')||'（応答なし）'});save();GA.busy=0;gDraw()}
  catch(x){GA.busy=0;fail(x instanceof TypeError?'通信できません（オフライン、または通信が制限されたページです）':'エラー: '+x.message)}}
-function openGem(m,nw){let el=$('#gapp');if(!el){el=document.createElement('div');el.id='gapp';document.body.appendChild(el)}
+function openGem(m,nw,img){let el=$('#gapp');if(!el){el=document.createElement('div');el.id='gapp';document.body.appendChild(el)}
  if(m||nw){GA.id=null;GA.gem=-1}el.style.display='grid';gDraw();
  if(!matchMedia('(prefers-reduced-motion:reduce)').matches)el.animate([{opacity:0,transform:'scale(.94)',borderRadius:'40px'},{opacity:1,transform:'none',borderRadius:'0'}],{duration:320,easing:'cubic-bezier(.2,.8,.2,1)'});
- if(m)gSend(m);else{const q=$('#gaq');q&&q.focus()}}
+ if(m)gSend(m,img);else{const q=$('#gaq');q&&q.focus()}}
 function gClose(){$('#gapp').style.display='none';render();if(window.chatDraw)chatDraw()}
 document.addEventListener('click',e=>{const b=e.target.closest('#gsend,#gclr');if(!b||e.target.closest('#wov'))return;e.stopImmediatePropagation();e.preventDefault();const q=$('#gq'),m=q?q.value.trim():'';if(q)q.value='';b.id=='gclr'?openGem('',1):openGem(m)},true);
 document.addEventListener('click',e=>{const w=e.target.closest('.ai3');if(!w||edit||e.target.closest('#wov,input,button'))return;openGem()});
@@ -683,4 +733,19 @@ document.addEventListener('click',e=>{const a=e.target.closest('#gapp');if(!a)re
 document.addEventListener('keydown',e=>{const a=$('#gapp');if(!a||a.style.display!='grid')return;
  if(e.key=='Escape')gClose();else if(e.target.id=='gaq'&&e.key=='Enter'&&!e.shiftKey&&!e.isComposing){e.preventDefault();const m=e.target.value;e.target.value='';gSend(m)}});
 document.addEventListener('input',e=>{if(e.target.id=='gaq'){e.target.style.height='auto';e.target.style.height=e.target.scrollHeight+'px'}});
+
+document.addEventListener('keydown',e=>{if(e.target.id=='asq'&&e.key=='Enter'&&!e.isComposing){gsGo(e.target.value);e.target.value=''}});
+
+/* Pixel風検索バー（G・音声・レンズ・AIモード） */
+(()=>{const G='<svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285f4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34a853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#fbbc05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#ea4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>',
+ AI='<svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path transform="translate(-1.5 2) scale(.85)" d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/><path d="M18 2l1.1 2.9L22 6l-2.9 1.1L18 10l-1.1-2.9L14 6l2.9-1.1z"/></svg>';
+ $('#asb').innerHTML=`<div class="asf">${G}<input id="asq" placeholder="" autocomplete="off" aria-label="検索"><button data-as="mic" aria-label="音声検索">${MI(MP.mic,26)}</button><button data-as="lens" aria-label="Googleレンズ">${MI(MP.cam,26)}</button></div><button class="aim" data-as="ai" aria-label="AIモード">${AI}</button>`;
+ $('#asb').addEventListener('click',e=>{const b=e.target.closest('[data-as]');if(!b)return;const q=$('#asq'),k=b.dataset.as;
+  if(k=='lens')window.open('https://lens.google.com/','_blank','noopener');
+  else if(k=='ai')window.open('https://www.google.com/search?udm=50&q='+encodeURIComponent(q.value),'_blank','noopener');
+  else{const R=window.SpeechRecognition||window.webkitSpeechRecognition;if(!R){toast('このブラウザは音声入力に対応していません');return}const r=new R();r.lang='ja-JP';r.onresult=ev=>{gsGo(ev.results[0][0].transcript)};r.start();toast('話してください…')}})})();
+
+document.addEventListener('click',e=>{const b=e.target.closest('.gt [data-gt]');if(!b||edit||e.target.closest('#wov'))return;const k=b.dataset.gt;
+ if(k=='ai')openGem();else if(k=='live')openGem('',1);else if(k=='mic'){openGem('',1);const m=document.querySelector('#gapp [data-ga=mic]');m&&m.click()}
+ else{const f=document.createElement('input');f.type='file';f.accept='image/*';f.onchange=()=>{const F=f.files[0];if(!F)return;const im=new Image();im.onload=()=>{const z=Math.min(1,1280/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=im.width*z;c.height=im.height*z;c.getContext('2d').drawImage(im,0,0,c.width,c.height);openGem('この画像について教えてください',1,{mimeType:'image/jpeg',data:c.toDataURL('image/jpeg',.85).split(',')[1]})};im.src=URL.createObjectURL(F)};f.click()}});
 </script></body></html>
