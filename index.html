@@ -220,6 +220,32 @@ input::placeholder{color:rgba(255,255,255,.6)}
 .gwadd{width:min(92%,880px);height:64px;border-radius:32px;border:0;background:#f0a63c;color:#fff;font:inherit;font-size:22px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:10px;cursor:pointer;flex:none;transition:filter .2s,transform .2s}
 .gwadd:hover{filter:brightness(1.08)}.gwadd:active{transform:scale(.97)}
 .gwx{position:absolute;top:18px;right:20px;width:40px;height:40px;border-radius:50%;border:0;background:rgba(255,255,255,.14);color:#fff;font-size:16px;cursor:pointer}
+
+/* ウィジェットのサイズ変更 */
+.rz{display:none;position:absolute;right:8px;bottom:8px;width:36px;height:36px;border-radius:50%;background:#fff;color:#000;place-items:center;font-size:18px;border:0;z-index:3;cursor:nwse-resize;touch-action:none;box-shadow:0 2px 8px rgba(0,0,0,.45)}
+.edit .rz{display:grid}.gwrap.rs{outline:2px dashed #5ac8ff;outline-offset:2px}.ai3{cursor:pointer}
+/* Gemini フルスクリーン */
+#gapp{position:fixed;inset:0;z-index:60;display:none;grid-template-columns:clamp(260px,27%,400px) 1fr;background:#000;color:#e3e3e3;font-family:"Google Sans",Roboto,"Noto Sans JP",system-ui,sans-serif;-webkit-user-select:text;user-select:text}
+#gapp.nodr{grid-template-columns:0 1fr}#gapp.nodr .adr{display:none}
+#gapp button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+.adr{background:#26272a;display:flex;flex-direction:column;overflow-y:auto;padding:0 12px 20px;min-width:0}
+.atb{display:flex;align-items:center;gap:8px;padding:calc(env(safe-area-inset-top,0px) + 10px) 8px 8px;flex:none}
+.aib{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;flex:none;padding:0}.aib:hover{background:rgba(255,255,255,.08)}
+.arow{display:flex;align-items:center;gap:16px;width:100%;text-align:left;padding:13px 12px;border-radius:24px;font-size:17px;color:#c4c7c5}
+.arow>span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.arow.on{background:#3a3f4a;color:#fff}
+.arow .aib{width:34px;height:34px;opacity:.35}.arow .aib.on{opacity:1}
+.ahd{padding:26px 12px 8px;font-size:17px}
+.amn{display:flex;flex-direction:column;min-width:0;min-height:0;height:100%}.amn .atb b{font-size:22px;font-weight:400;margin-left:6px}
+.abd{flex:1;min-height:0;overflow-y:auto}.acol{width:min(94%,900px);margin:0 auto}
+.ahero{padding:min(14vh,120px) 24px 0}.ahero small{display:block;font-size:26px;color:#c4c7c5}.ahero h1{font-size:clamp(30px,4vw,44px);font-weight:400;margin:6px 0 28px}
+.achip{display:flex;align-items:center;gap:10px;background:#1e1f20!important;border-radius:30px;padding:16px 24px 16px 14px;margin:0 0 14px;font-size:20px;width:fit-content}
+.amsg{margin:18px 0;line-height:1.75;font-size:17px;white-space:pre-wrap;word-break:break-word}
+.amsg.u{background:#282a2c;padding:12px 18px;border-radius:22px 22px 4px 22px;margin-left:auto;width:fit-content;max-width:85%}
+.ain{width:min(94%,900px);margin:0 auto calc(16px + env(safe-area-inset-bottom,0px));background:#26272a;border-radius:32px;padding:18px 20px 12px 24px;flex:none}
+.ain textarea{width:100%;background:none;border:0;outline:0;color:#e3e3e3;font:inherit;font-size:18px;resize:none;max-height:180px;padding:4px 0 14px}
+.ain textarea::placeholder{color:#9aa0a6}.abr{display:flex;align-items:center;gap:8px}
+.apill{border:1px solid #444746!important;border-radius:24px;padding:0 20px;height:48px;font-size:17px}
+.aci{width:52px;height:52px;border-radius:50%;border:1px solid #444746!important;display:grid;place-items:center;flex:none}.aci.f{background:#3a3b3f!important;border-color:#3a3b3f!important}
 </style></head><body>
 <div class="wall" id="wall"><svg viewBox="0 0 1000 700" preserveAspectRatio="none"><defs><filter id="bl"><feGaussianBlur stdDeviation="2.5"/></filter></defs><g fill="none" stroke="rgba(90,190,255,.55)" stroke-width="2.5" filter="url(#bl)"><path d="M180 -20C330 90 380 300 250 520S60 700 0 740"/><path d="M640 -20C820 60 900 220 760 420S560 640 520 730"/><path d="M1040 120C880 260 830 420 720 560" stroke-opacity=".6"/></g><g fill="none" stroke="rgba(150,220,255,.18)" stroke-width="14"><path d="M180 -20C330 90 380 300 250 520S60 700 0 740"/><path d="M640 -20C820 60 900 220 760 420S560 640 520 730"/></g></svg></div>
 
@@ -417,7 +443,7 @@ function plan(cols,rows){const pgs=[],mk=()=>({o:Array.from({length:rows},()=>Ar
  fit=(o,w,h)=>{for(let r=0;r+h<=rows;r++)for(let c=0;c+w<=cols;c++)if(o.slice(r,r+h).every(x=>x.slice(c,c+w).every(v=>!v)))return[c,r]};
  if(S.o.wg)(S.wl||[]).filter(x=>WGS[x.t]).forEach(x=>{const w=Math.min(x.w,cols),h=Math.min(x.h,rows);let p=pgs.find(q=>fit(q.o,w,h));if(!p){p=mk();pgs.push(p)}const t=fit(p.o,w,h);
   for(let r=t[1];r<t[1]+h;r++)for(let c=t[0];c<t[0]+w;c++)p.o[r][c]=1;p.w.push([x.u,x.t,t[0],t[1],w,h]);p.f-=w*h});return pgs}
-const WGP=p=>p?p.w.map(([u,id,c,r,w,h])=>`<div class="gwrap" data-u="${u}" style="grid-column:${c+1}/span ${w};grid-row:${r+1}/span ${h};--k:${h>=4?1.3:1}">${WGS[id](w,h)}<button class="mn" data-wx="${u}" aria-label="ウィジェットを削除">−</button></div>`).join(''):'';
+const WGP=p=>p?p.w.map(([u,id,c,r,w,h])=>`<div class="gwrap" data-u="${u}" style="grid-column:${c+1}/span ${w};grid-row:${r+1}/span ${h};--k:${h>=4?1.3:1}">${WGS[id](w,h)}<button class="mn" data-wx="${u}" aria-label="ウィジェットを削除">−</button><button class="rz" aria-label="サイズ変更">⤡</button></div>`).join(''):'';
 function migr(){if(!Array.isArray(S.wl)){const sz={date:[2,2],dclock:[2,2],aclock:[2,2],weather:[2,2],clockapp:[4,2],calendar:[2,2],todo:[2,2],calc:[2,2],fav:[4,2],gemini:[4,4],gsearch:[4,2],memo:[4,2]};S.wl=(S.o.ws||[]).filter(t=>sz[t]).map(t=>({u:Math.random().toString(36).slice(2,8),t,w:sz[t][0],h:sz[t][1]}));save()}}
 /* 時計アプリ */
 const p2=n=>String(n).padStart(2,'0'),fmt=s=>{s=Math.max(0,Math.ceil(s));return(s>=3600?(s/3600|0)+':'+p2(s%3600/60|0):(s/60|0))+':'+p2(s%60)},swF=ms=>p2(ms/6e4|0)+':'+p2(ms/1e3%60|0)+'.'+p2(ms/10%100|0);
@@ -487,7 +513,7 @@ async function wxInit(){wxDraw();const o=S.o,w=S.wx;if(!o.city||!$('#wxc'))retur
   S.wx={city:o.city,name:r.name,at:Date.now(),t:f.current.temperature_2m,code:f.current.weather_code,hi:f.daily.temperature_2m_max[0],lo:f.daily.temperature_2m_min[0],pp:f.daily.precipitation_probability_max[0]}}
  catch(e){S.wx={city:o.city,err:e instanceof TypeError?'通信できません（オフライン、または通信が制限されたページです）':e.message,at:Date.now()}}
  save();wxDraw()}
-const bb=x=>`<div class="bb ${x.r}">${esc(x.t)}</div>`,chatH=()=>(S.chat||[]).map(bb).join('')||'<div class="hint" style="padding:10px">AIに質問してみましょう</div>';
+const bb=x=>`<div class="bb ${x.r}">${esc(x.t)}</div>`,chatH=()=>((S.gc||[])[0]||{m:[]}).m.slice(-6).map(bb).join('')||'<div class="hint" style="padding:10px">AIに質問してみましょう</div>';
 function chatDraw(x){const l=$('#gl');if(!l)return;l.innerHTML=chatH()+(x?bb({r:'a',t:x}):'');l.scrollTop=l.scrollHeight}
 document.addEventListener('click',async e=>{if(e.target.closest('#gclr')){S.chat=[];save();chatDraw();return}if(!e.target.closest('#gsend'))return;const q=$('#gq'),m=q.value.trim();if(!m)return;
  if(!S.o.gk){chatDraw('設定でGemini APIキーを入力してください。');return}
@@ -604,4 +630,57 @@ document.addEventListener('keydown',e=>{if(!$('#wov').classList.contains('show')
 document.addEventListener('click',e=>{const b=e.target.closest('[data-wx]');if(!b)return;e.preventDefault();const i=S.wl.findIndex(x=>x.u==b.dataset.wx);if(i<0)return;const it=S.wl.splice(i,1)[0];save();render();toast('ウィジェットを削除しました',()=>{S.wl.splice(i,0,it);save();render()})});
 document.addEventListener('pointerdown',e=>{const g=e.target.closest('.gwrap');if(!g||edit||e.target.closest('input,textarea,button,a,label'))return;lpw=setTimeout(()=>setEdit(true),650)});
 ['pointerup','pointercancel','pointermove'].forEach(t=>document.addEventListener(t,()=>clearTimeout(lpw)));
+
+/* ウィジェットのリサイズ（グリッドにスナップ） */
+document.addEventListener('pointerdown',e=>{const b=e.target.closest('.rz');if(!b)return;e.preventDefault();e.stopPropagation();
+ const g=b.closest('.gwrap'),it=S.wl.find(x=>x.u==g.dataset.u);if(!it)return;const r=g.getBoundingClientRect(),c0=parseInt(g.style.gridColumn)-1,r0=parseInt(g.style.gridRow)-1,x0=e.clientX,y0=e.clientY;let w=it.w,h=it.h;
+ g.classList.add('rs');b.setPointerCapture(e.pointerId);
+ b.onpointermove=ev=>{w=Math.max(2,Math.min(8-c0,Math.round((r.width+12+ev.clientX-x0)/LAY.cw)));h=Math.max(2,Math.min(5-r0,Math.round((r.height+12+ev.clientY-y0)/LAY.rh)));g.style.gridColumn=(c0+1)+'/span '+w;g.style.gridRow=(r0+1)+'/span '+h};
+ b.onpointerup=b.onpointercancel=()=>{b.onpointermove=b.onpointerup=b.onpointercancel=null;it.w=w;it.h=h;save();render()}});
+/* Gemini フルスクリーンアプリ */
+const GP={menu:'M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z',pen:'M3 21h3.75L17.81 9.94l-3.75-3.75L3 17.25V21zM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z',pin:'M16 9V4h1c.55 0 1-.45 1-1s-.45-1-1-1H7c-.55 0-1 .45-1 1s.45 1 1 1h1v5c0 1.66-1.34 3-3 3v2h5.97v7l1 1 1-1v-7H19v-2c-1.66 0-3-1.34-3-3z',tune:'M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z',wave:'M7 18h2V6H7v12zm4 4h2V2h-2v20zm-8-8h2v-4H3v4zm12 4h2V6h-2v12zm4-8v4h2v-4h-2z'},
+GEMS=[['数学アシスタント','あなたは丁寧な数学の先生です。手順を追って分かりやすく解説してください。'],['学習コーチ','あなたは学習コーチです。目標設定・学習計画・復習方法を提案してください。'],['Storybook','あなたは物語作家です。要望から短い物語を書いてください。'],['PCの専門家','あなたはPCとハードウェアの専門家です。具体的で正確に答えてください。'],['編集者と校正役','あなたは編集者兼校正者です。誤りを直し改善案を示してください。'],['AI文章チェッカー','不自然な表現を指摘し、自然な日本語に直してください。']],
+GCH=[['🖼️','画像の作成','作りたい画像を説明します: '],['🎸','音楽を作成','作りたい曲のイメージ: '],['📄','何でも書く','次の文章を書いてください: '],['📚','知識習得サポート','次の内容を分かりやすく教えてください: ']];
+let GA={id:null,gem:-1,pro:0,busy:0,nd:innerWidth<800,f:''};
+const gCur=()=>(S.gc||[]).find(c=>c.id==GA.id);
+function gDraw(x){const el=$('#gapp');if(!el)return;const c=gCur(),gem=GEMS[GA.gem],L=(S.gc||[]).filter(c=>!GA.f||c.t.includes(GA.f)).sort((a,b)=>!!b.p-!!a.p),ms=c?c.m:[];
+ el.classList.toggle('nodr',GA.nd);
+ el.innerHTML=`<aside class="adr"><div class="atb"><button class="aib" data-ga="menu" aria-label="メニュー">${MI(GP.menu)}</button><span style="flex:1"></span><button class="aib" data-ga="find" aria-label="検索">${MI(MP.search)}</button></div>
+ <button class="arow" data-ga="new">${MI(GP.pen,28)}<span>チャットを新規作成</span></button><div class="ahd">Gem</div>
+ ${GEMS.map((g,i)=>`<button class="arow${i==GA.gem?' on':''}" data-gem="${i}">${MI(MP.spark,26)}<span>${g[0]}</span></button>`).join('')}<div class="ahd">チャット</div>
+ ${L.map(k=>`<div class="arow${k.id==GA.id?' on':''}" data-gc="${k.id}" role="button"><span>${esc(k.t)}</span><button class="aib${k.p?' on':''}" data-gp="${k.id}" aria-label="固定">${MI(GP.pin,20)}</button></div>`).join('')}</aside>
+ <main class="amn"><div class="atb"><button class="aib" data-ga="menu" aria-label="メニュー">${MI(GP.menu)}</button><b>${gem?esc(gem[0]):'Gemini'}</b><span style="flex:1"></span><button class="aib" data-ga="close" aria-label="閉じる">${MI(MP.close)}</button></div>
+ <div class="abd" id="abd">${ms.length||x?`<div class="acol">${ms.map(m=>`<div class="amsg ${m.r}">${esc(m.t)}</div>`).join('')}${x?`<div class="amsg">${esc(x)}</div>`:''}</div>`:`<div class="acol"><div class="ahero"><small>${esc(S.o.gn||'雄大')} さん</small><h1>何から始めますか？</h1>${GCH.map(([e,t],i)=>`<button class="achip" data-gch="${i}">${e} ${t}</button>`).join('')}</div></div>`}</div>
+ <div class="ain"><textarea id="gaq" rows="1" placeholder="Gemini に相談"></textarea><div class="abr"><button class="aib" data-ga="new" aria-label="新規">${MI(MP.add,28)}</button><button class="aib" aria-label="ツール">${MI(GP.tune)}</button><span style="flex:1"></span><button class="apill" data-ga="pro">${GA.pro?'思考モード':'高速モード'}</button><button class="aci" data-ga="mic" aria-label="音声入力">${MI(MP.mic)}</button><button class="aci f" data-ga="send" aria-label="送信">${MI(GP.wave)}</button></div></div></main>`;
+ const b=$('#abd');b.scrollTop=b.scrollHeight}
+async function gSend(m){m=(m||'').trim();if(!m||GA.busy)return;let c=gCur();if(!c){c={id:Date.now().toString(36),t:m.slice(0,24),g:GA.gem,m:[]};(S.gc=S.gc||[]).unshift(c);GA.id=c.id}
+ c.m.push({r:'u',t:m});const fail=t=>{c.m.pop();if(!c.m.length){S.gc=S.gc.filter(y=>y!=c);GA.id=null}gDraw(t);const q=$('#gaq');if(q)q.value=m};
+ if(!S.o.gk){fail('設定でGemini APIキーを入力してください。');return}
+ GA.busy=1;gDraw('…');
+ try{const g=GEMS[c.g],r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${GA.pro?'gemini-2.5-pro':encodeURIComponent(S.o.gm||'gemini-2.5-flash')}:generateContent`,{method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':S.o.gk},body:JSON.stringify({...(g?{systemInstruction:{parts:[{text:g[1]}]}}:{}),contents:c.m.slice(-20).map(x=>({role:x.r=='u'?'user':'model',parts:[{text:x.t}]}))})}),j=await r.json();
+  if(!r.ok)throw Error(j.error&&j.error.message||r.status);c.m.push({r:'a',t:(((j.candidates||[])[0]||{}).content||{parts:[]}).parts.map(p=>p.text).join('')||'（応答なし）'});save();GA.busy=0;gDraw()}
+ catch(x){GA.busy=0;fail(x instanceof TypeError?'通信できません（オフライン、または通信が制限されたページです）':'エラー: '+x.message)}}
+function openGem(m,nw){let el=$('#gapp');if(!el){el=document.createElement('div');el.id='gapp';document.body.appendChild(el)}
+ if(m||nw){GA.id=null;GA.gem=-1}el.style.display='grid';gDraw();
+ if(!matchMedia('(prefers-reduced-motion:reduce)').matches)el.animate([{opacity:0,transform:'scale(.94)',borderRadius:'40px'},{opacity:1,transform:'none',borderRadius:'0'}],{duration:320,easing:'cubic-bezier(.2,.8,.2,1)'});
+ if(m)gSend(m);else{const q=$('#gaq');q&&q.focus()}}
+function gClose(){$('#gapp').style.display='none';render();if(window.chatDraw)chatDraw()}
+document.addEventListener('click',e=>{const b=e.target.closest('#gsend,#gclr');if(!b||e.target.closest('#wov'))return;e.stopImmediatePropagation();e.preventDefault();const q=$('#gq'),m=q?q.value.trim():'';if(q)q.value='';b.id=='gclr'?openGem('',1):openGem(m)},true);
+document.addEventListener('click',e=>{const w=e.target.closest('.ai3');if(!w||edit||e.target.closest('#wov,input,button'))return;openGem()});
+document.addEventListener('click',e=>{const a=e.target.closest('#gapp');if(!a)return;const t=e.target,q=$('#gaq'),d=x=>t.closest(x);let n;
+ if(n=d('[data-gp]')){const c=S.gc.find(k=>k.id==n.dataset.gp);c.p=!c.p;save();gDraw();return}
+ if(n=d('[data-gc]')){GA.id=n.dataset.gc;GA.gem=gCur().g;if(innerWidth<800)GA.nd=1;gDraw();return}
+ if(n=d('[data-gem]')){GA.gem=+n.dataset.gem;GA.id=null;if(innerWidth<800)GA.nd=1;gDraw();return}
+ if(n=d('[data-gch]')){q.value=GCH[n.dataset.gch][2];q.focus();return}
+ if(!(n=d('[data-ga]')))return;const k=n.dataset.ga;
+ if(k=='menu'){GA.nd=!GA.nd;a.classList.toggle('nodr',GA.nd)}
+ else if(k=='new'){GA.id=null;GA.gem=-1;gDraw()}
+ else if(k=='find'){GA.f=prompt('チャットを検索',GA.f)||'';gDraw()}
+ else if(k=='close')gClose();
+ else if(k=='pro'){GA.pro^=1;n.textContent=GA.pro?'思考モード':'高速モード'}
+ else if(k=='send'){const m=q.value;q.value='';gSend(m)}
+ else if(k=='mic'){const R=window.SpeechRecognition||window.webkitSpeechRecognition;if(!R){toast('このブラウザは音声入力に対応していません');return}const r=new R();r.lang='ja-JP';r.onresult=ev=>{q.value+=ev.results[0][0].transcript};r.start()}});
+document.addEventListener('keydown',e=>{const a=$('#gapp');if(!a||a.style.display!='grid')return;
+ if(e.key=='Escape')gClose();else if(e.target.id=='gaq'&&e.key=='Enter'&&!e.shiftKey&&!e.isComposing){e.preventDefault();const m=e.target.value;e.target.value='';gSend(m)}});
+document.addEventListener('input',e=>{if(e.target.id=='gaq'){e.target.style.height='auto';e.target.style.height=e.target.scrollHeight+'px'}});
 </script></body></html>
