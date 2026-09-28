@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ホーム画面ブックマーク</title>
+<style>
+:root{color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--sc:1;--is:calc(clamp(58px,8.2vw,92px)*var(--sc));--tx:#fff}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+html,body{height:100%;margin:0;background:#020a14;color:var(--tx);font-family:-apple-system,"SF Pro Text","Hiragino Sans","Noto Sans JP",system-ui,sans-serif;overflow:hidden;-webkit-user-select:none;user-select:none}
+*{box-sizing:border-box}
+.wall{position:fixed;inset:0;background:radial-gradient(120% 80% at 20% 10%,#0a5f8f 0%,#053a60 35%,#01101f 75%);transition:filter .5s}
+.wall svg{position:absolute;inset:0;width:100%;height:100%}
+.glass{position:relative;isolation:isolate;--mx:30%;--my:0%;background:linear-gradient(135deg,rgba(255,255,255,.2),rgba(255,255,255,.04) 55%,rgba(255,255,255,.12));backdrop-filter:blur(var(--bl,20px)) saturate(2.2) brightness(1.12) contrast(1.05);-webkit-backdrop-filter:blur(var(--bl,20px)) saturate(2.2) brightness(1.12) contrast(1.05);border:1px solid rgba(255,255,255,.12);box-shadow:inset 0 1.5px 1px rgba(255,255,255,.55),inset 0 -1.5px 1px rgba(255,255,255,.2),inset 1px 0 1px -.5px rgba(255,255,255,.3),inset 0 0 24px rgba(255,255,255,.07),0 14px 44px rgba(0,0,0,.4),0 2px 6px rgba(0,0,0,.25)}
+.glass::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1.5px;background:conic-gradient(from 210deg,rgba(255,255,255,.95),rgba(255,255,255,.08) 22%,rgba(255,255,255,.55) 48%,rgba(255,255,255,.08) 72%,rgba(255,255,255,.95));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);mask-composite:exclude;pointer-events:none;z-index:-1;opacity:.85}
+.glass::after{content:"";position:absolute;inset:0;border-radius:inherit;background:radial-gradient(circle at var(--mx) var(--my),rgba(255,255,255,.32),transparent 45%),linear-gradient(180deg,rgba(255,255,255,.16),transparent 30%);pointer-events:none;z-index:-1}
+.sb{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;height:44px;display:flex;justify-content:space-between;align-items:center;padding:0 28px;font-weight:600;font-size:15px;z-index:5}
+.sb .r{display:flex;gap:10px;align-items:center}
+.bat{background:#ffd60a;color:#000;border-radius:7px;padding:1px 7px;font-size:13px;font-weight:700}
+.sbtn{background:none;border:0;color:#fff;cursor:pointer;padding:4px;display:flex}
+#pages{position:fixed;inset:0;display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
+#pages::-webkit-scrollbar{display:none}
+.pg{flex:0 0 100%;scroll-snap-align:start;padding:calc(64px + env(safe-area-inset-top,0px)) 4vw 0;overflow-y:auto;scrollbar-width:none}
+.grid{display:grid;justify-items:center;row-gap:22px}
+.app{display:flex;flex-direction:column;align-items:center;gap:7px;width:calc(var(--is) + 30px);color:#fff;text-decoration:none;position:relative;-webkit-touch-callout:none}
+.ic{position:relative;width:var(--is);height:var(--is);border-radius:23%;display:grid;place-items:center;overflow:hidden;font-size:calc(var(--is)*.52);box-shadow:0 5px 16px rgba(0,0,0,.42),0 0 0 .5px rgba(255,255,255,.12);transition:transform .35s cubic-bezier(.2,.9,.3,1.3),box-shadow .3s}
+.ic::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;box-shadow:inset 0 0 0 .5px rgba(255,255,255,.22),inset 0 1.5px 2px -.5px rgba(255,255,255,.55),inset 0 0 12px rgba(255,255,255,.06);background:linear-gradient(160deg,rgba(255,255,255,.2),transparent 36%)}
+.ic::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:conic-gradient(from 200deg,rgba(255,255,255,.75),rgba(255,255,255,.04) 25%,rgba(255,255,255,.35) 55%,rgba(255,255,255,.04) 78%,rgba(255,255,255,.75));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);mask-composite:exclude;pointer-events:none;z-index:1;opacity:.5;transition:opacity .3s}
+.ic img{width:100%;height:100%;object-fit:cover}
+.app:active .ic{transform:scale(.92)}
+.app span{font-size:13px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-shadow:0 1px 3px rgba(0,0,0,.6)}
+.mn{display:none;position:absolute;top:-6px;left:2px;width:26px;height:26px;border-radius:50%;place-items:center;font-style:normal;font-size:20px;line-height:1;background:rgba(150,160,170,.85);backdrop-filter:blur(10px);z-index:2}
+.edit .mn{display:grid}
+.edit .app .ic{animation:jig .25s infinite alternate}
+.edit .app:nth-child(2n) .ic{animation-delay:-.12s;animation-direction:alternate-reverse}
+@keyframes jig{from{transform:rotate(-1.6deg)}to{transform:rotate(1.6deg)}}
+@media(prefers-reduced-motion:reduce){.edit .app .ic{animation:none}}
+.dragging{opacity:.3}
+#dots{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(126px + env(safe-area-inset-bottom,0px));display:flex;gap:11px;padding:8px 14px;border-radius:20px;z-index:4}
+#dots i{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.4)}
+#dots i.on{background:#fff}
+#dock{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));display:flex;align-items:center;gap:calc(var(--is)*.16);padding:10px 14px;border-radius:36px;max-width:96vw;overflow-x:auto;scrollbar-width:none;z-index:4}
+#dock .app{width:auto}#dock .app span{display:none}
+#dock .ic{width:calc(var(--is)*.82);height:calc(var(--is)*.82)}
+.sep{width:1px;height:calc(var(--is)*.7);background:rgba(255,255,255,.3);flex:none}
+.plus{width:calc(var(--is)*.82);height:calc(var(--is)*.82);border-radius:23%;display:none;place-items:center;font-size:30px;flex:none;cursor:pointer;border:1px dashed rgba(255,255,255,.5);background:none;color:#fff}
+.edit #dock .plus{display:grid}
+.tb{position:fixed;top:calc(8px + env(safe-area-inset-top,0px));left:20px;right:20px;display:none;justify-content:space-between;z-index:9}
+.edit .tb{display:flex}.edit .sb{visibility:hidden}
+.tb div{display:flex;gap:10px}
+.pill{border:0;color:#fff;font-size:15px;padding:9px 18px;border-radius:22px;cursor:pointer;font-family:inherit}
+/* library */
+.lib{display:flex;flex-direction:column;gap:22px;align-items:center}
+.search{width:min(620px,80%);height:50px;border-radius:26px;display:flex;align-items:center;gap:10px;padding:0 18px}
+.search input{flex:1;background:none;border:0;outline:0;color:#fff;font-size:18px;font-family:inherit;min-width:0}
+input::placeholder{color:rgba(255,255,255,.6)}
+.folders{display:grid;grid-template-columns:repeat(4,var(--fs));gap:34px 4vw;justify-content:center;--fs:min(20vw,210px)}
+@media(max-width:700px){.folders{grid-template-columns:repeat(2,var(--fs));--fs:38vw}}
+.fd{display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;font-size:14px;text-align:center}
+.ft{width:var(--fs);height:var(--fs);border-radius:12%;padding:11%;display:grid;grid-template-columns:1fr 1fr;gap:9%}
+.ft .ic{width:100%;height:100%;font-size:calc(var(--fs)*.2);box-shadow:none}
+.ft .m{display:grid;grid-template-columns:1fr 1fr;gap:12%}
+.ft .m .ic{font-size:calc(var(--fs)*.09)}
+.res{display:grid;grid-template-columns:repeat(auto-fill,calc(var(--is) + 30px));justify-content:center;gap:22px;width:100%}
+/* overlays */
+.ov{position:fixed;inset:0;display:none;z-index:20;background:rgba(0,10,25,.32)}
+.ov.show{display:flex}
+.sp{margin:calc(60px + env(safe-area-inset-top,0px)) auto auto;width:min(760px,94vw);border-radius:32px;padding:16px 22px 22px;max-height:80%;overflow:auto}
+.sp .search{width:100%;background:none;border:0;border-bottom:1px solid rgba(255,255,255,.3);border-radius:0;box-shadow:none}
+.sp h4{margin:16px 0 10px;font-size:14px;opacity:.75;font-weight:600}
+.sug{display:grid;grid-template-columns:repeat(auto-fill,calc(var(--is) + 20px));gap:16px;justify-content:center}
+.row{display:flex;gap:14px;align-items:center;padding:8px;border-radius:14px;cursor:pointer;color:#fff;text-decoration:none}
+.row:hover,.row.f{background:rgba(255,255,255,.16)}
+.row .ic{width:44px;height:44px;font-size:24px;flex:none}
+.row small{display:block;opacity:.65;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:60vw}
+.sheet{margin:auto;width:min(460px,94vw);border-radius:30px;padding:22px;max-height:92%;overflow:auto}
+.sheet h3{margin:0 0 14px;font-size:18px}
+.sheet label{display:block;font-size:13px;opacity:.8;margin:12px 0 5px}
+.sheet input[type=text],.sheet textarea,.sheet input:not([type]){width:100%;background:rgba(0,0,0,.28);border:1px solid rgba(255,255,255,.2);border-radius:12px;color:#fff;padding:11px 13px;font-size:16px;font-family:inherit;outline:0}
+.sheet textarea{height:180px;resize:none;-webkit-user-select:text;user-select:text}
+.sheet input:focus,.sheet textarea:focus{border-color:#5ac8ff}
+.pv{display:flex;gap:14px;align-items:center}
+.pv .ic{flex:none}
+.sw{display:flex;gap:8px;flex-wrap:wrap}
+.sw b{width:28px;height:28px;border-radius:50%;cursor:pointer;border:2px solid transparent}
+.sw b.on{border-color:#fff}
+.btns{display:flex;gap:10px;margin-top:20px;justify-content:flex-end}
+.pill.pri{background:#0a84ff}.pill.del{background:rgba(255,69,58,.8);margin-right:auto}
+.pill.g{background:rgba(255,255,255,.18)}
+.hint{text-align:center;opacity:.6;font-size:13px;padding:30px}
+.app:hover .ic{transform:scale(1.06);box-shadow:0 8px 22px rgba(0,0,0,.5),0 0 14px rgba(140,200,255,.18)}.app:hover .ic::before{opacity:1}
+#dock .app:hover .ic{transform:scale(1.12)}
+.rec .mn{display:none!important}
+.hf{display:flex;flex-direction:column;align-items:center;gap:7px;width:calc(var(--is) + 30px);cursor:pointer;font-size:13px}
+.hf span{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-shadow:0 1px 3px rgba(0,0,0,.6)}
+.hf .ft{width:var(--is);height:var(--is);padding:9%;gap:5%;border-radius:23%;grid-template-columns:repeat(3,1fr);grid-auto-rows:1fr;transition:transform .35s cubic-bezier(.2,.9,.3,1.3)}
+.hf .ft .ic{border-radius:24%;font-size:calc(var(--is)*.11);box-shadow:none}
+.hf:hover .ft{transform:scale(1.06)}.hf:active .ft{transform:scale(.92)}
+.edit .hf .ft{animation:jig .25s infinite alternate}
+.fi{display:block;margin:6px auto 18px;background:none;border:0;border-bottom:1px solid rgba(255,255,255,.3);color:#fff;font-size:20px;text-align:center;font-family:inherit;outline:0;width:60%}
+.sz{display:flex;align-items:center;gap:8px;padding:6px 16px;border-radius:22px;font-size:14px}.sz input{width:110px;accent-color:#5ac8ff}
+@keyframes pop{from{opacity:0;transform:scale(.4) translateY(24px);filter:blur(8px)}to{opacity:1;transform:none;filter:none}}
+@keyframes rise{from{opacity:0;transform:translateX(-50%) translateY(70px)}to{opacity:1;transform:translateX(-50%)}}
+@keyframes ovin{from{opacity:0}to{opacity:1}}
+@keyframes sheet{from{opacity:0;transform:translateY(26px) scale(.93);filter:blur(10px)}to{opacity:1;transform:none;filter:none}}
+.boot .app,.boot .hf{animation:pop .7s cubic-bezier(.2,.9,.3,1.25) both}
+.boot #dock,.boot #dots{animation:rise .9s cubic-bezier(.2,.9,.3,1.1) both}
+.ov.show{animation:ovin .25s both}.ov.show>.glass{animation:sheet .45s cubic-bezier(.2,.9,.3,1.15) both}
+#dots i{transition:transform .3s,background .3s}#dots i.on{transform:scale(1.3)}
+.pill{transition:transform .2s,filter .2s}.pill:hover{filter:brightness(1.2)}.pill:active{transform:scale(.94)}
+.pg{will-change:transform}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.ft{align-content:start}.ft .ic{height:auto;aspect-ratio:1}.hf .ft{grid-auto-rows:auto}
+.glass::before{opacity:calc(.85*var(--gl,1))}.glass::after{opacity:var(--gl,1)}
+.nolb .app span,.nolb .hf span{display:none}.noan *{animation:none!important;transition:none!important}
+.wall.img{background-size:cover;background-position:center}.wall.img svg{display:none}
+.bd{position:absolute;top:-6px;right:6px;min-width:22px;height:22px;padding:0 6px;border-radius:11px;background:#ff3b30;font-size:13px;font-weight:600;display:grid;place-items:center;z-index:3;box-shadow:0 2px 6px rgba(0,0,0,.4)}
+#dock .bd{right:-6px}
+.wgs{display:grid;grid-template-columns:1fr 2fr;gap:22px;height:calc(2*(var(--is) + 52px) - 22px);margin:0 auto 22px;max-width:900px}
+.wg{border-radius:26px;padding:18px 20px;display:flex;flex-direction:column;justify-content:center;overflow:hidden}
+.wg small{color:#ff453a;font-weight:700;font-size:15px}.wg b{font-size:calc(var(--is)*.75);font-weight:300;line-height:1.05}.wg em{font-style:normal;opacity:.7;font-size:13px}
+.wg textarea{flex:1;background:none;border:0;outline:0;resize:none;color:#fff;font:inherit;font-size:16px;-webkit-user-select:text;user-select:text}
+#cm{position:fixed;display:none;z-index:40;min-width:210px;padding:6px;border-radius:22px;animation:sheet .3s cubic-bezier(.2,.9,.3,1.15)}
+#cm button{display:block;width:100%;text-align:left;background:none;border:0;color:#fff;font:inherit;font-size:16px;padding:11px 14px;border-radius:15px;cursor:pointer}
+#cm button:hover{background:rgba(255,255,255,.18)}#cm .dg{color:#ff6961}
+#ts{position:fixed;left:50%;bottom:calc(150px + env(safe-area-inset-bottom,0px));z-index:45;padding:12px 18px;border-radius:24px;display:none;align-items:center;gap:14px;font-size:15px}
+#ts.show{display:flex;animation:tsin .4s both}#ts button{background:none;border:0;color:#5ac8ff;font:inherit;font-weight:700;cursor:pointer}
+@keyframes tsin{from{opacity:0;transform:translateX(-50%) translateY(20px)}to{opacity:1;transform:translateX(-50%)}}
+.sheet .tg{display:flex;justify-content:space-between;align-items:center;margin:12px 0 0;font-size:16px;opacity:1}.tg input{width:20px;height:20px;accent-color:#0a84ff}
+.sheet select{width:100%;background:rgba(0,0,0,.28);border:1px solid rgba(255,255,255,.2);border-radius:12px;color:#fff;padding:11px;font-size:16px;font-family:inherit}
+.wgs{height:auto;max-width:none;grid-template-columns:none;gap:20px;grid-auto-rows:calc(2*(var(--is) + 46px) - 22px)}
+.wl{background:#fafafa;color:#111;padding:0;border-radius:26px;box-shadow:0 8px 24px rgba(0,0,0,.35);overflow:hidden}.wl svg{width:100%;height:100%;display:block}
+.wx{background:linear-gradient(160deg,rgba(150,170,190,.8),rgba(105,125,150,.6));gap:4px;justify-content:flex-start}.wx .c{font-size:17px;font-weight:600}.wx .t{font-size:42px;font-weight:300;line-height:1.1}.wx span{display:block;font-size:14px}.wx small{color:#fff}
+.gm{background:rgba(18,18,20,.82);justify-content:space-between;gap:10px}.gl{flex:1;overflow:auto;font-size:14px;line-height:1.5;white-space:pre-wrap;-webkit-user-select:text;user-select:text;opacity:.9}
+.gi{display:flex;gap:8px}.gi input{flex:1;min-width:0;background:rgba(255,255,255,.12);border:0;border-radius:18px;padding:10px 14px;color:#fff;font:inherit;outline:0;-webkit-user-select:text;user-select:text}
+.gi button{border:0;border-radius:50%;width:38px;background:linear-gradient(135deg,#4285f4,#9b72cb,#d96570);color:#fff;cursor:pointer}
+.sheet input[type=password]{width:100%;background:rgba(0,0,0,.28);border:1px solid rgba(255,255,255,.2);border-radius:12px;color:#fff;padding:11px 13px;font-size:16px;outline:0}
+.edit .app{touch-action:none}
+.ghost{opacity:.92;filter:drop-shadow(0 12px 18px rgba(0,0,0,.5));transition:none!important}.ghost .ic{transform:scale(1.12)}.ghost .mn{display:none!important}
+.ins .ic{outline:2px dashed rgba(255,255,255,.55);outline-offset:4px}
+.fdt .ic{transform:scale(1.32)!important;animation:none!important;box-shadow:0 0 0 3px rgba(255,255,255,.65),0 0 36px rgba(120,190,255,.75)!important}
+.hf.fdt .ft{transform:scale(1.25)!important;animation:none!important;box-shadow:0 0 0 3px rgba(255,255,255,.6),0 0 36px rgba(120,190,255,.7)}
+.wd,.wl,.wx,.gm{aspect-ratio:1;height:100%;width:auto;justify-self:center;min-width:0}
+.wg,.wl{border-radius:clamp(24px,3.4vw,36px)}
+.gsw{gap:14px;justify-content:space-between;background:rgba(24,24,28,.78)}
+.gsb{display:flex;align-items:center;gap:8px;background:#fff;color:#222;border-radius:999px;padding:0 8px 0 18px;height:50px}
+.gsb input{flex:1;min-width:0;border:0;outline:0;background:none;font:inherit;font-size:16px;color:#222;-webkit-user-select:text;user-select:text}
+.gsb button{border:0;background:none;font-size:20px;cursor:pointer;width:38px;height:38px;border-radius:50%}.gsb button:hover{background:#eee}
+.gg{font:700 26px/1 Arial,sans-serif;background:linear-gradient(90deg,#4285f4 25%,#ea4335 25% 50%,#fbbc05 50% 75%,#34a853 75%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.gsh{display:flex;justify-content:space-around}.gsh a{display:flex;flex-direction:column;align-items:center;gap:6px;color:#fff;text-decoration:none;font-size:12px}
+.gsh i{display:grid;place-items:center;width:54px;height:54px;border-radius:50%;background:rgba(255,255,255,.14);font-style:normal;font-size:24px;transition:transform .3s cubic-bezier(.2,.9,.3,1.3)}.gsh a:hover i{transform:scale(1.1)}
+.ph{display:block;aspect-ratio:1;border-radius:24%;background:rgba(255,255,255,.14)}
+:focus-visible{outline:2px solid #5ac8ff;outline-offset:2px}
+</style></head><body>
+<div class="wall" id="wall"><svg viewBox="0 0 1000 700" preserveAspectRatio="none"><defs><filter id="bl"><feGaussianBlur stdDeviation="2.5"/></filter></defs><g fill="none" stroke="rgba(90,190,255,.55)" stroke-width="2.5" filter="url(#bl)"><path d="M180 -20C330 90 380 300 250 520S60 700 0 740"/><path d="M640 -20C820 60 900 220 760 420S560 640 520 730"/><path d="M1040 120C880 260 830 420 720 560" stroke-opacity=".6"/></g><g fill="none" stroke="rgba(150,220,255,.18)" stroke-width="14"><path d="M180 -20C330 90 380 300 250 520S60 700 0 740"/><path d="M640 -20C820 60 900 220 760 420S560 640 520 730"/></g></svg></div>
+
+<div class="sb"><span id="clk"></span><div class="r"><button class="sbtn" id="sbtn" aria-label="検索"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></svg></button><svg width="20" height="16" viewBox="0 0 20 16" fill="#fff"><path d="M10 14.5l2.3-2.6a3.4 3.4 0 00-4.6 0L10 14.5zM10 9.2c1.6 0 3 .6 4.1 1.6l1.4-1.6A8.400 8.400 0 0010 6.900c-2.100 0-4.100.8-5.500 2.300l1.400 1.600A5.900 5.900 0 0110 9.200zM10 3.700c2.900 0 5.500 1.100 7.500 3L19 5.100A12.400 12.400 0 0010 1.500 12.400 12.400 0 001 5.100l1.500 1.600a10.800 10.800 0 017.500-3z"/></svg><span class="bat" id="bat">87</span></div></div>
+
+<div class="tb"><div><button class="pill glass" id="add">＋ 追加</button></div><div><label class="sz glass">サイズ<input type="range" id="sz" min="70" max="140" value="100"></label><button class="pill glass" id="wp">壁紙</button><input type="file" id="wpf" accept="image/*" hidden><button class="pill glass" id="wl">設定</button><button class="pill glass" id="dt">データ</button><button class="pill glass" id="done">完了 ✓</button></div></div>
+
+<div id="pages"></div>
+<div id="dots" class="glass"></div>
+<div id="dock" class="glass"></div>
+
+<div class="ov" id="sov"><div class="sp glass" id="sp"><div class="search"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.500"/><path d="M15.500 15.500L21 21"/></svg><input id="q" placeholder="検索 / URLを入力" autocomplete="off"></div><div id="sres"></div></div></div>
+<div class="ov" id="fov"><div class="sp glass" id="fpanel" style="text-align:center"></div></div>
+<div class="ov" id="eov"><div class="sheet glass" id="ed"></div></div>
+<div class="ov" id="dov"><div class="sheet glass"><h3>データの書き出し・読み込み</h3><label>JSON（アイコン画像を含みます）</label><textarea id="ta" spellcheck="false"></textarea><div class="btns"><button class="pill g" id="dx">書き出し</button><button class="pill g" id="dh">ブックマークHTML</button><input type="file" id="dhf" accept=".html,.htm" hidden><button class="pill pri" id="di">読み込み</button><button class="pill g" id="dc">閉じる</button></div><div id="dm" class="hint" style="padding:10px"></div></div></div>
+
+<div class="ov" id="gov"><div class="sheet glass" id="gs"></div></div>
+<div id="cm" class="glass"></div><div id="ts" class="glass"></div>
+<script>
+const K='ipadhome.v1',COL=['#0a84ff','#30d158','#ff453a','#ff9f0a','#bf5af2','#ff375f','#64d2ff','#2c2c2e'];
+const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let S=null;try{S=JSON.parse(localStorage.getItem(K))}catch(e){}
+const D=(t,u,e,c,cat,dock)=>({id:Math.random().toString(36).slice(2,9),title:t,url:u,emoji:e,color:c,cat,dock:!!dock,icon:null,n:0,fold:''});
+if(!S||!Array.isArray(S.items))S={wall:0,items:[
+D('Google','https://www.google.com','G','#4285f4','検索',1),D('YouTube','https://www.youtube.com','▶','#ff0033','動画',1),D('Gmail','https://mail.google.com','✉','#ea4335','仕事効率化',1),D('Wikipedia','https://ja.wikipedia.org','W','#3a3a3c','調べもの',1),D('GitHub','https://github.com','🐙','#24292f','開発',1),
+D('Claude','https://claude.ai','✳','#d97757','AI'),D('ChatGPT','https://chatgpt.com','◎','#10a37f','AI'),D('Gemini','https://gemini.google.com','✦','#5b7cfa','AI'),D('Google マップ','https://maps.google.com','📍','#34a853','調べもの'),D('翻訳','https://translate.google.com','文A','#4285f4','調べもの'),D('Google Drive','https://drive.google.com','△','#fbbc04','仕事効率化'),D('カレンダー','https://calendar.google.com','📅','#1a73e8','仕事効率化'),D('Spotify','https://open.spotify.com','♪','#1db954','動画'),D('Canva','https://www.canva.com','C','#7d2ae8','クリエイティブ'),D('MDN','https://developer.mozilla.org','{ }','#1b1b1b','開発'),D('NHK','https://www.nhk.or.jp','N','#0a5fb4','ニュース')]};
+const save=()=>{try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}};
+const DEFO={lb:1,rec:1,wg:1,an:1,se:'google',bl:20,gl:100,ws:['date','dclock','aclock'],city:'',gk:'',gm:'gemini-2.5-flash'},SE={google:'https://www.google.com/search?q=',bing:'https://www.bing.com/search?q=',duckduckgo:'https://duckduckgo.com/?q='};
+S.o=Object.assign({},DEFO,S.o||{});
+const byId=id=>S.items.find(x=>x.id==id);
+const ic=b=>`<div class="ic" style="background:${b.icon?'#222':`linear-gradient(160deg,${b.color},${b.color}cc)`}">${b.icon?`<img src="${esc(b.icon)}" alt="" draggable="false">`:esc(b.emoji||[...(b.title||'?')][0])}</div>`;
+const app=b=>`<a class="app" data-id="${b.id}" href="${esc(b.url)}" target="_blank" rel="noopener noreferrer" draggable="false">${ic(b)}<span>${esc(b.title)}</span>${b.badge?`<b class="bd">${esc(b.badge)}</b>`:''}<i class="mn">−</i></a>`;
+let edit=false,page=0,lq='';
+function layout(){const W=innerWidth,H=innerHeight,is=Math.min(92,Math.max(58,W*.082))*(S.sc||1),cols=W>1000?6:W>700?5:W>480?4:3,rows=Math.max(2,Math.floor((H-64-150)/(is+52)));return{cols,rows,per:cols*rows}}
+function render(){
+ document.documentElement.style.setProperty('--sc',S.sc||1);
+ const {cols,rows,per}=layout(),raw=S.items.filter(b=>!b.dock&&!b.hid),seen={},home=[],ch=[];
+ raw.forEach(b=>{if(!b.fold)home.push(b);else if(!seen[b.fold]){seen[b.fold]=1;home.push({fold:b.fold})}});
+ const wr=S.o.wg?wrows(cols):0,p0=S.o.wg?cols*Math.max(1,rows-2*wr):per;ch.push(home.slice(0,p0));for(let i=p0;i<home.length;i+=per)ch.push(home.slice(i,i+per));
+ let h=ch.map((c,pi)=>`<section class="pg">${pi||!S.o.wg?'':WG(cols)}<div class="grid" style="grid-template-columns:repeat(${cols},1fr)">${c.map(x=>x.fold?hf(x.fold):app(x)).join('')||'<div class="hint" style="grid-column:1/-1">「＋ 追加」でブックマークを追加</div>'}</div></section>`).join('');
+ h+=`<section class="pg"><div class="lib"><label class="search glass"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></svg><input id="lq" placeholder="Appライブラリ" value="${esc(lq)}" autocomplete="off"></label><div id="lb"></div></div></section>`;
+ const keep=$('#pages').scrollLeft;
+ $('#pages').innerHTML=h;$('#pages').style.scrollBehavior='auto';$('#pages').scrollLeft=keep;
+  const dk=S.items.filter(b=>b.dock&&!b.hid),rc=S.o.rec?S.items.filter(b=>!b.dock&&!b.hid).sort((a,b)=>b.n-a.n).slice(0,3):[];
+ $('#dock').innerHTML=dk.map(app).join('')+(rc.length?'<div class="sep"></div>'+rc.map(b=>app(b).replace('class="app"','class="app rec"')).join(''):'')+'<button class="plus glass" id="dplus" aria-label="ドックに追加">＋</button>';
+ $('#dots').innerHTML=Array(ch.length+1).fill(0).map((_,i)=>'<i></i>').join('');
+ libRender();dots();document.body.classList.toggle('edit',edit);
+ document.querySelectorAll('.app').forEach(a=>a.draggable=edit);
+ applyOpts();wxInit();tickClk();
+}
+function folders(){
+ const it=S.items.filter(b=>!b.hid),top=[...it].sort((a,b)=>b.n-a.n).slice(0,4),rec=[...it].reverse().slice(0,4),f=[['提案',top],['最近追加した項目',rec]],cats={};
+ it.forEach(b=>{const c=b.cat||'その他';(cats[c]=cats[c]||[]).push(b)});
+ Object.keys(cats).forEach(c=>f.push([c,cats[c]]));return f}
+function libRender(){
+ const el=$('#lb');if(!el)return;
+ if(lq.trim()){const r=match(lq);el.innerHTML=`<div class="res">${r.map(app).join('')}</div>`||'';if(!r.length)el.innerHTML='<div class="hint">見つかりません</div>';return}
+ el.innerHTML='<div class="folders">'+folders().map(([n,l],i)=>{const a=l.slice(0,4);const g=l.length>4?a.slice(0,3).map(ic).join('')+`<div class="m">${l.slice(3,7).map(ic).join('')}</div>`:a.map(ic).join('');return`<div class="fd" data-f="${i}" tabindex="0" role="button"><div class="ft glass">${g}</div>${esc(n)}</div>`}).join('')+'<div class="fd" data-hid="1" tabindex="0" role="button"><div class="ft glass hd"><i class="ph"></i><i class="ph"></i><i class="ph"></i><i class="ph"></i></div>非表示</div></div>'}
+function match(q){q=q.toLowerCase();return S.items.filter(b=>!b.hid&&(b.title+' '+b.url+' '+(b.cat||'')).toLowerCase().includes(q))}
+function dots(){const p=$('#pages'),x=p.scrollLeft/p.clientWidth,i=Math.round(x);page=i;[...$('#dots').children].forEach((d,j)=>d.classList.toggle('on',j==i));
+ [...p.children].forEach((s,j)=>{const d=Math.min(1,Math.abs(x-j));s.style.transform=`scale(${1-.07*d})`;s.style.opacity=1-.6*d})}
+$('#pages').addEventListener('scroll',dots);
+function go(i){const p=$('#pages');p.style.scrollBehavior='smooth';p.scrollLeft=i*p.clientWidth}
+$('#dots').onclick=e=>{const i=[...$('#dots').children].indexOf(e.target);if(i>=0)go(i)};
+addEventListener('keydown',e=>{const t=e.target.tagName;
+ if(e.key=='Escape')closeAll();
+ else if(t!='INPUT'&&t!='TEXTAREA'){if(e.key=='/'){e.preventDefault();openSearch()}else if(e.key=='ArrowRight')go(Math.min(page+1,$('#dots').children.length-1));else if(e.key=='ArrowLeft')go(Math.max(0,page-1))}});
+addEventListener('resize',()=>{clearTimeout(window._r);window._r=setTimeout(render,150)});
+function closeAll(){document.querySelectorAll('.ov').forEach(o=>o.classList.remove('show'))}
+document.querySelectorAll('.ov').forEach(o=>o.addEventListener('pointerdown',e=>{if(e.target===o)o.classList.remove('show')}));
+/* clock & battery */
+function tick(){const d=new Date();$('#clk').textContent=d.getHours()+':'+String(d.getMinutes()).padStart(2,'0')}tick();setInterval(tick,10000);
+try{navigator.getBattery().then(b=>{const u=()=>{$('#bat').textContent=Math.round(b.level*100)};u();b.onlevelchange=u})}catch(e){}
+/* long press / clicks */
+let lp=null,lpFired=false;
+document.addEventListener('pointerdown',e=>{const a=e.target.closest('.app,.hf');if(!a||edit)return;lpFired=false;lp=setTimeout(()=>{lpFired=true;showMenu(a,e)},550)});
+['pointerup','pointercancel','pointermove'].forEach(t=>document.addEventListener(t,()=>clearTimeout(lp)));
+document.addEventListener('contextmenu',e=>{if(e.target.closest('textarea,input'))return;const a=e.target.closest('.app,.hf');if(a){e.preventDefault();if(!edit)showMenu(a,e)}else if(e.target.closest('.pg')){e.preventDefault();if(!edit)setEdit(true)}});
+function setEdit(v){edit=v;document.body.classList.toggle('edit',v);document.querySelectorAll('.app').forEach(a=>a.draggable=v)}
+document.addEventListener('click',e=>{
+ const a=e.target.closest('.app');
+ if(a){const b=byId(a.dataset.id);
+  if(lpFired){e.preventDefault();lpFired=false;return}
+  if(edit){e.preventDefault();if(e.target.closest('.mn')){delItem(b)}else openEd(b);return}
+  b.n++;save();launch(a);return}
+ const h=e.target.closest('.hf');if(h){if(lpFired){lpFired=false;return}openHF(h.dataset.hf);return}
+ const f=e.target.closest('.fd');if(f){f.dataset.hid?openHidden():openFolder(+f.dataset.f)}
+});
+$('#done').onclick=()=>setEdit(false);
+$('#add').onclick=()=>openEd(null,false);$('#dock').addEventListener('click',e=>{if(e.target.closest('#dplus'))openEd(null,true)});
+$('#wl').onclick=()=>{drawSet();$('#gov').classList.add('show')};
+document.addEventListener('input',e=>{if(e.target.id=='lq'){lq=e.target.value;libRender()}});
+function openFolder(i){const [n,l]=folders()[i];$('#fpanel').innerHTML=`<h3 style="margin:8px 0 18px">${esc(n)}</h3><div class="res">${l.map(app).join('')}</div>`;$('#fov').classList.add('show')}
+/* drag reorder (edit mode) */
+let dragId=null;
+document.addEventListener('dragstart',e=>{const a=e.target.closest('.app');if(!edit||!a){e.preventDefault();return}dragId=a.dataset.id;a.classList.add('dragging');e.dataTransfer.effectAllowed='move';e.dataTransfer.setData('text/plain',dragId)});
+document.addEventListener('dragover',e=>{if(!dragId)return;e.preventDefault();const x=e.clientX,n=Date.now();if((x<60||x>innerWidth-60)&&n-(window._ft||0)>900){window._ft=n;go(Math.max(0,Math.min($('#dots').children.length-1,page+(x<60?-1:1))))}});
+document.addEventListener('drop',e=>{if(!dragId)return;e.preventDefault();const a=e.target.closest('.app'),d=byId(dragId);
+ const hf0=e.target.closest('.hf');
+ if(hf0){d.fold=hf0.dataset.hf;d.dock=false}
+ else if(a&&a.dataset.id!=dragId){const t=byId(a.dataset.id),r=a.getBoundingClientRect();S.items=S.items.filter(x=>x!=d);
+  if(!t.dock&&!t.fold&&Math.abs(e.clientX-r.left-r.width/2)<r.width*.2&&Math.abs(e.clientY-r.top-r.height*.35)<r.height*.22){t.fold=d.fold='新しいフォルダ';d.dock=false;S.items.splice(S.items.indexOf(t)+1,0,d)}
+  else{d.dock=t.dock;d.fold=t.dock?'':(t.fold||'');S.items.splice(S.items.indexOf(t),0,d)}}
+ else if(e.target.closest('#dock')){d.dock=true;S.items=S.items.filter(x=>x!=d);S.items.push(d)}
+ else if(e.target.closest('.pg')){const la=[...e.target.closest('.pg').querySelectorAll('.grid .app')].filter(x=>x.dataset.id!=dragId).pop(),t=la&&byId(la.dataset.id);S.items=S.items.filter(x=>x!=d);d.dock=false;d.fold='';if(t)S.items.splice(S.items.indexOf(t)+1,0,d);else S.items.push(d)}
+ dragId=null;save();render()});
+document.addEventListener('dragend',()=>{dragId=null;document.querySelectorAll('.dragging').forEach(x=>x.classList.remove('dragging'))});
+/* editor */
+let cur=null,isNew=false;
+function fixUrl(u){u=u.trim();return u&&!/^[a-z][a-z0-9+.-]*:/i.test(u)?'https://'+u:u}
+function openEd(b,dock){$('#fov').classList.remove('show');isNew=!b;cur=b?{...b}:D('','','','#0a84ff','その他',dock);drawEd();$('#eov').classList.add('show')}
+function drawEd(){
+ const cats=[...new Set(S.items.map(x=>x.cat).filter(Boolean))];
+ $('#ed').innerHTML=`<h3>${isNew?'ブックマークを追加':'ブックマークを編集'}</h3>
+ <div class="pv" id="pv">${ic(cur)}<div style="flex:1"><button class="pill g" id="up" style="width:100%">画像をアップロード</button>${cur.icon?'<button class="pill g" id="clr" style="width:100%;margin-top:8px">画像を削除</button>':''}<input type="file" id="fi" accept="image/*" hidden></div></div>
+ <label>タイトル</label><input type="text" id="et" value="${esc(cur.title)}" placeholder="例: Wikipedia">
+ <label>URL</label><input type="text" id="eu" value="${esc(cur.url)}" placeholder="https://example.com" inputmode="url">
+ <label>アイコンの文字・絵文字（画像がないとき）</label><input type="text" id="ee" value="${esc(cur.emoji)}" maxlength="3">
+ <label>アイコンの色</label><div class="sw">${COL.map(c=>`<b data-c="${c}" style="background:${c}" class="${c==cur.color?'on':''}"></b>`).join('')}<input type="color" id="ec" value="${/^#[0-9a-f]{6}$/i.test(cur.color)?cur.color:'#0a84ff'}" style="width:32px;height:28px;border:0;background:none;padding:0"></div>
+ <label>Appライブラリのカテゴリ</label><input type="text" id="ecat" list="cl" value="${esc(cur.cat)}"><datalist id="cl">${cats.map(c=>`<option value="${esc(c)}">`).join('')}</datalist>
+ <label>ホーム画面のフォルダ（空欄でなし）</label><input type="text" id="efd" value="${esc(cur.fold)}">
+ <label>バッジ（赤い数字・空欄でなし）</label><input type="text" id="eb" value="${esc(cur.badge)}" maxlength="3">
+ <label style="display:flex;gap:8px;align-items:center;margin-top:14px"><input type="checkbox" id="ed2" ${cur.dock?'checked':''}> ドックに置く</label>
+ <label style="display:flex;gap:8px;align-items:center;margin-top:10px"><input type="checkbox" id="ehd" ${cur.hid?'checked':''}> 非表示フォルダに入れる</label>
+ <div class="btns">${isNew?'':'<button class="pill del" id="edel">削除</button>'}<button class="pill g" id="ecan">キャンセル</button><button class="pill pri" id="esv">保存</button></div>`;
+ const sync=()=>{cur.title=$('#et').value;cur.url=$('#eu').value;cur.emoji=$('#ee').value;cur.cat=$('#ecat').value;cur.fold=$('#efd').value.trim();cur.badge=$('#eb').value.trim();cur.dock=$('#ed2').checked;cur.hid=$('#ehd').checked;if(cur.hid){cur.dock=false;cur.fold=''}};
+ $('#up').onclick=()=>$('#fi').click();
+ $('#fi').onchange=e=>{const f=e.target.files[0];if(!f)return;sync();const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const c=document.createElement('canvas');c.width=c.height=256;const x=c.getContext('2d'),s=Math.min(im.width,im.height);x.drawImage(im,(im.width-s)/2,(im.height-s)/2,s,s,0,0,256,256);cur.icon=c.toDataURL('image/png');drawEd()};im.src=r.result};r.readAsDataURL(f)};
+ if($('#clr'))$('#clr').onclick=()=>{sync();cur.icon=null;drawEd()};
+ document.querySelectorAll('.sw b').forEach(b=>b.onclick=()=>{sync();cur.color=b.dataset.c;drawEd()});
+ $('#ec').onchange=e=>{sync();cur.color=e.target.value;drawEd()};
+ $('#ecan').onclick=()=>$('#eov').classList.remove('show');
+ if($('#edel'))$('#edel').onclick=()=>{S.items=S.items.filter(x=>x.id!=cur.id);save();$('#eov').classList.remove('show');render()};
+ $('#esv').onclick=()=>{sync();cur.url=fixUrl(cur.url);if(!cur.url){$('#eu').focus();$('#eu').style.borderColor='#ff453a';return}
+  if(!cur.title.trim())cur.title=cur.url.replace(/^https?:\/\/(www\.)?/,'').split('/')[0];
+  const i=S.items.findIndex(x=>x.id==cur.id);if(i<0)S.items.push(cur);else S.items[i]=cur;
+  save();$('#eov').classList.remove('show');render()};
+}
+/* search */
+function openSearch(){closeAll();$('#sov').classList.add('show');$('#q').value='';sres();setTimeout(()=>$('#q').focus(),50)}
+$('#sbtn').onclick=openSearch;
+function sres(){
+ const q=$('#q').value.trim(),el=$('#sres');
+ if(!q){el.innerHTML='<h4>Siriからの提案</h4><div class="sug">'+S.items.filter(b=>!b.hid).sort((a,b)=>b.n-a.n).slice(0,12).map(app).join('')+'</div>';return}
+ const r=match(q);
+ el.innerHTML=(r.length?'<h4>ブックマーク</h4>':'')+r.slice(0,8).map((b,i)=>`<a class="row ${i?'':'f'}" href="${esc(b.url)}" target="_blank" rel="noopener noreferrer" data-id="${b.id}">${ic(b)}<div>${esc(b.title)}<small>${esc(b.url)}</small></div></a>`).join('')+
+ `<h4>ウェブ</h4><a class="row ${r.length?'':'f'}" href="${/^(https?:\/\/)?[\w-]+(\.[\w-]+)+(\/\S*)?$/i.test(q)?esc(fixUrl(q)):SE[S.o.se]+encodeURIComponent(q)}" target="_blank" rel="noopener noreferrer"><div class="ic" style="background:#3a3a3c;width:44px;height:44px;font-size:22px">🔍</div><div>「${esc(q)}」を検索<small>ウェブ検索 / URLを直接開く</small></div></a>`}
+$('#q').oninput=sres;
+$('#q').onkeydown=e=>{const rs=[...document.querySelectorAll('#sres .row')],i=rs.findIndex(x=>x.classList.contains('f'));
+ if(e.key=='ArrowDown'||e.key=='ArrowUp'){e.preventDefault();if(!rs.length)return;rs[i]&&rs[i].classList.remove('f');const n=(i+(e.key=='ArrowDown'?1:-1)+rs.length)%rs.length;rs[n].classList.add('f');rs[n].scrollIntoView({block:'nearest'})}
+ else if(e.key=='Enter'){const r=$('#sres .row.f')||$('#sres .app');if(r)r.click()}};
+$('#sres').addEventListener('click',e=>{const a=e.target.closest('[data-id]');if(a){const b=byId(a.dataset.id);if(b){b.n++;save()}}});
+/* data */
+$('#dt').onclick=()=>{$('#ta').value='';$('#dm').textContent='';$('#dov').classList.add('show')};
+$('#dc').onclick=()=>$('#dov').classList.remove('show');
+$('#dx').onclick=()=>{$('#ta').value=JSON.stringify({...S,o:{...S.o,gk:''}});$('#ta').select();$('#dm').textContent='コピーして保存してください。'};
+$('#di').onclick=()=>{try{const j=JSON.parse($('#ta').value);if(!Array.isArray(j.items))throw 0;S=j;S.wall=S.wall||0;S.o=Object.assign({},DEFO,S.o||{});save();render();$('#dov').classList.remove('show')}catch(e){$('#dm').textContent='読み込めませんでした。JSONを確認してください。'}};
+const sqp=(i,k)=>{const a=i*Math.PI/30,f=v=>Math.sign(v)*Math.sqrt(Math.abs(v));return[f(Math.sin(a))*k,f(-Math.cos(a))*k]};
+const wsp=(id,c)=>id=='memo'||id=='gsearch'?Math.min(c,4):(c>=4?2:c);
+function wrows(c){let r=1,u=0;S.o.ws.forEach(id=>{const q=wsp(id,c);if(u+q>c){r++;u=0}u+=q});return S.o.ws.length?r:0}
+const WGS={
+ date:()=>{const d=new Date();return`<div class="wg wd glass"><small>${'日月火水木金土'[d.getDay()]}曜日</small><b>${d.getDate()}日</b><em>${d.getFullYear()}年${d.getMonth()+1}月</em></div>`},
+ dclock:()=>`<div class="wl"><svg viewBox="-50 -50 100 100">${[...Array(60)].map((_,i)=>{const[a,b]=sqp(i,47),[c,d]=sqp(i,43);return`<line class="t" x1="${a.toFixed(1)}" y1="${b.toFixed(1)}" x2="${c.toFixed(1)}" y2="${d.toFixed(1)}" stroke-width="1.4" stroke-linecap="round" stroke="#bbb"/>`}).join('')}<text class="dt" x="0" y="0" text-anchor="middle" dominant-baseline="central" font-size="34" font-weight="900" font-family="'Arial Narrow','Helvetica Neue Condensed',Impact,sans-serif" lengthAdjust="spacingAndGlyphs" textLength="62" fill="#111"></text></svg></div>`,
+ aclock:()=>`<div class="wl"><svg viewBox="-50 -50 100 100">${[...Array(60)].map((_,i)=>{const h=i%5==0,[a,b]=sqp(i,47),[c,d]=sqp(i,h?38:43);return`<line x1="${a.toFixed(1)}" y1="${b.toFixed(1)}" x2="${c.toFixed(1)}" y2="${d.toFixed(1)}" stroke="${h?'#111':'#bbb'}" stroke-width="${h?1.8:1}" stroke-linecap="round"/>`}).join('')}${[['12',0,-27],['3',27,0],['6',0,27],['9',-27,0]].map(([t,x,y])=>`<text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="central" font-size="11" font-weight="700" font-family="-apple-system,sans-serif" fill="#111">${t}</text>`).join('')}<line class="hh" y1="4" y2="-22" stroke="#111" stroke-width="3.4" stroke-linecap="round"/><line class="mh" y1="4" y2="-34" stroke="#111" stroke-width="2.6" stroke-linecap="round"/><line class="sh" y1="9" y2="-38" stroke="#f5a623" stroke-width="1"/><circle r="2.4" fill="#fff" stroke="#f5a623" stroke-width="1.2"/></svg></div>`,
+ weather:()=>'<div class="wg wx glass" id="wxc"></div>',
+ gemini:()=>'<div class="wg gm glass"><div class="gl" id="gl">Geminiに質問してみましょう</div><div class="gi"><input id="gq" placeholder="Geminiに聞く" autocomplete="off"><button id="gsend" aria-label="送信">➤</button></div></div>',
+ gsearch:()=>`<div class="wg gsw glass"><div class="gsb"><b class="gg">G</b><input id="gsq" placeholder="Google 検索" autocomplete="off"><button id="gmic" aria-label="音声入力">🎤</button><button id="glens" aria-label="Googleレンズ">📷</button></div><div class="gsh">${[['🖼️','画像','https://www.google.com/imghp'],['🌐','翻訳','https://translate.google.com'],['📰','ニュース','https://news.google.com'],['🗺️','マップ','https://maps.google.com']].map(([i,t,u])=>`<a href="${u}" target="_blank" rel="noopener noreferrer"><i>${i}</i>${t}</a>`).join('')}</div></div>`,
+ memo:()=>`<div class="wg glass"><textarea id="wm" placeholder="メモ（自動保存）">${esc(S.memo||'')}</textarea></div>`};
+const WG=c=>S.o.ws.length?`<div class="wgs" style="grid-template-columns:repeat(${c},1fr)">${S.o.ws.map(id=>WGS[id]().replace(/^<div class="/,`<div style="grid-column:span ${wsp(id,c)}" class="`)).join('')}</div>`:'';
+function tickClk(){const d=new Date(),sc=d.getSeconds()+d.getMilliseconds()/1000,mi=d.getMinutes()+sc/60,h=d.getHours()%12+mi/60,v=d.getHours()+':'+String(d.getMinutes()).padStart(2,'0');
+ document.querySelectorAll('.dt').forEach(t=>{if(t.textContent!=v){t.textContent=v;t.setAttribute('textLength',v.length>4?76:62)}});
+ document.querySelectorAll('.wl .t').forEach((l,i)=>l.style.stroke=i<=d.getSeconds()?'#111':'#bbb');
+ document.querySelectorAll('.hh').forEach(x=>x.setAttribute('transform',`rotate(${h*30})`));document.querySelectorAll('.mh').forEach(x=>x.setAttribute('transform',`rotate(${mi*6})`));document.querySelectorAll('.sh').forEach(x=>x.setAttribute('transform',`rotate(${sc*6})`))}
+setInterval(tickClk,200);
+setInterval(()=>{if(S.wx)S.wx.at=0;wxInit()},9e5);
+const WC=c=>c==0?['☀️','晴れ']:c<=3?['⛅','曇り']:c<=48?['🌫️','霧']:c<=67?['🌧️','雨']:c<=77?['❄️','雪']:c<=82?['🌦️','にわか雨']:['⛈️','雷雨'];
+function wxDraw(){const el=$('#wxc');if(!el)return;const o=S.o,w=S.wx;
+ if(!o.city){el.innerHTML='<small>天気</small><span>設定で都市を入力してください</span>';return}
+ if(!w||w.city!=o.city){el.innerHTML=`<small>${esc(o.city)}</small><span>取得中…</span>`;return}
+ if(w.err){el.innerHTML=`<small>${esc(o.city)}</small><span style="font-size:12px;opacity:.9">${esc(w.err)}</span>`;return}
+ const[i,l]=WC(w.code);el.innerHTML=`<span class="c">${esc(w.name||o.city)}</span><span class="t">${Math.round(w.t)}°</span><span>${i} ${l}</span><span style="opacity:.8">最高 ${Math.round(w.hi)}° 最低 ${Math.round(w.lo)}°</span><span style="opacity:.8">降水確率 ${w.pp==null?0:w.pp}%</span>`}
+async function wxInit(){wxDraw();const o=S.o,w=S.wx;if(!o.city||!$('#wxc'))return;if(w&&w.city==o.city&&Date.now()-w.at<(w.err?6e4:9e5))return;
+ S.wx={city:o.city,at:Date.now(),err:'取得中…'};
+ try{let r=null;for(const n of [o.city,o.city.replace(/[市区町村]$/,''),o.city.replace(/[都道府県]$/,'')]){if(!n||r)continue;const g=await(await fetch('https://geocoding-api.open-meteo.com/v1/search?count=1&language=ja&name='+encodeURIComponent(n))).json();r=g.results&&g.results[0]}if(!r)throw Error('都市が見つかりません');
+  const f=await(await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${r.latitude}&longitude=${r.longitude}&current=temperature_2m,weather_code&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto`)).json();
+  S.wx={city:o.city,name:r.name,at:Date.now(),t:f.current.temperature_2m,code:f.current.weather_code,hi:f.daily.temperature_2m_max[0],lo:f.daily.temperature_2m_min[0],pp:f.daily.precipitation_probability_max[0]}}
+ catch(e){S.wx={city:o.city,err:e instanceof TypeError?'通信できません（オフライン、または通信が制限されたページです）':e.message,at:Date.now()}}
+ save();wxDraw()}
+let gh=[];
+document.addEventListener('click',async e=>{if(e.target.id!='gsend')return;const q=$('#gq'),l=$('#gl'),m=q.value.trim();if(!m)return;
+ if(!S.o.gk){l.textContent='設定でGemini APIキーを入力してください。';return}
+ q.value='';gh.push({role:'user',parts:[{text:m}]});l.textContent='Q: '+m+'\n\n…';
+ try{const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(S.o.gm||'gemini-2.5-flash')}:generateContent`,{method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':S.o.gk},body:JSON.stringify({contents:gh.slice(-10)})}),j=await r.json();
+  if(!r.ok)throw Error(j.error&&j.error.message||r.status);const a=(((j.candidates||[])[0]||{}).content||{parts:[]}).parts.map(p=>p.text).join('')||'（応答なし）';gh.push({role:'model',parts:[{text:a}]});l.textContent='Q: '+m+'\n\n'+a}
+ catch(x){gh.pop();l.textContent=x instanceof TypeError?'通信できません（オフライン、または通信が制限されたページです）':'エラー: '+x.message}});
+document.addEventListener('keydown',e=>{if(e.target.id=='gq'&&e.key=='Enter'&&!e.isComposing)$('#gsend').click()});
+document.addEventListener('input',e=>{if(e.target.id=='wm'){S.memo=e.target.value;clearTimeout(window._m);window._m=setTimeout(save,400)}});
+function applyWall(){const w=$('#wall');if(S.wimg){w.classList.add('img');w.style.backgroundImage=`url(${S.wimg})`;w.style.filter=''}else{w.classList.remove('img');w.style.backgroundImage='';w.style.filter=`hue-rotate(${[0,75,160,-60,110,-130][S.wall%6]}deg)`}}
+function applyOpts(){const o=S.o,r=document.documentElement.style,b=document.body.classList;r.setProperty('--bl',o.bl+'px');r.setProperty('--gl',o.gl/100);b.toggle('nolb',!o.lb);b.toggle('noan',!o.an);applyWall()}
+function drawSet(){const o=S.o,chk=(k,t)=>`<label class="tg"><span>${t}</span><input type="checkbox" data-o="${k}" ${o[k]?'checked':''}></label>`,rg=(k,t,a,b)=>`<label>${t}</label><input type="range" data-o="${k}" min="${a}" max="${b}" value="${o[k]}" style="width:100%;accent-color:#5ac8ff">`;
+ $('#gs').innerHTML=`<h3>設定</h3>${chk('lb','アイコン名を表示')}${chk('rec','ドックにおすすめを表示')}${chk('wg','ウィジェットを表示')}<label>表示するウィジェット</label>${[['date','日付'],['dclock','時計（デジタル）'],['aclock','時計（アナログ）'],['weather','天気'],['gemini','Gemini'],['gsearch','Google検索'],['memo','メモ']].map(([k,t])=>`<label class="tg"><span>${t}</span><input type="checkbox" data-ws="${k}" ${o.ws.includes(k)?'checked':''}></label>`).join('')}
+ <label>天気の都市（例: 市川市 / Tokyo）</label><input type="text" data-o="city" value="${esc(o.city)}"><label>Gemini APIキー（このブラウザにのみ保存）</label><input type="password" data-o="gk" value="${esc(o.gk)}" autocomplete="off"><label>Geminiのモデル名</label><input type="text" data-o="gm" value="${esc(o.gm)}"><label>非表示フォルダのPIN${o.pin?'（設定済み）':''}・空欄で解除</label><input type="password" data-o="pinset" inputmode="numeric" autocomplete="off" placeholder="4桁以上の数字">${chk('an','アニメーション')}${rg('bl','ガラスのぼかし',0,40)}${rg('gl','ガラスの反射の強さ',0,150)}
+ <label>検索エンジン</label><select data-o="se">${Object.keys(SE).map(k=>`<option ${o.se==k?'selected':''}>${k}</option>`).join('')}</select>
+ <label>壁紙</label><div class="sw">${[0,1,2,3,4,5].map(i=>`<b data-w="${i}" style="background:hsl(${200+[0,75,160,-60,110,-130][i]},70%,40%)" class="${!S.wimg&&S.wall%6==i?'on':''}"></b>`).join('')}</div>
+ <div class="btns" style="justify-content:flex-start"><button class="pill g" id="wu">画像を選ぶ</button>${S.wimg?'<button class="pill g" id="wr">画像を外す</button>':''}<input type="file" id="wf" accept="image/*" hidden></div><div class="btns"><button class="pill pri" id="gc">閉じる</button></div>`}
+$('#gs').addEventListener('input',e=>{const t=e.target,k=t.dataset.o;
+ if(t.dataset.ws){const w=t.dataset.ws,l=S.o.ws.filter(x=>x!=w);S.o.ws=['date','dclock','aclock','weather','gemini','gsearch','memo'].filter(x=>t.checked?(x==w||l.includes(x)):l.includes(x));save();render();return}
+ if(!k||k=='city'||k=='pinset')return;S.o[k]=t.type=='checkbox'?+t.checked:t.type=='range'?+t.value:t.value;save();if(k=='wg'||k=='rec')render();else applyOpts()});
+$('#gs').addEventListener('click',e=>{const w=e.target.dataset.w;if(w!=null){S.wall=+w;S.wimg=null;save();applyOpts();drawSet()}
+ if(e.target.id=='gc')$('#gov').classList.remove('show');if(e.target.id=='wu')$('#wf').click();if(e.target.id=='wr'){S.wimg=null;save();applyOpts();drawSet()}});
+$('#gs').addEventListener('change',e=>{const t=e.target;if(t.dataset.o=='pinset'){sha(t.value).then(h=>{S.o.pin=t.value?h:'';save();toast(t.value?'PINを設定しました':'PINを解除しました')})}else if(t.dataset.o=='city'){S.o.city=t.value.trim();S.wx=null;save();render()}else if(t.id=='wf'&&t.files[0])setWall(t.files[0])});
+$('#wpf').onchange=e=>{if(e.target.files[0])setWall(e.target.files[0]);e.target.value=''};$('#wp').onclick=()=>$('#wpf').click();
+function setWall(f){const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const k=Math.min(1,1800/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=im.width*k;c.height=im.height*k;c.getContext('2d').drawImage(im,0,0,c.width,c.height);S.wimg=c.toDataURL('image/jpeg',.82);save();applyOpts();if($('#gov').classList.contains('show'))drawSet()};im.src=r.result};r.readAsDataURL(f)}
+function toast(m,u){const t=$('#ts');t.innerHTML=`<span>${esc(m)}</span>${u?'<button id="tu">元に戻す</button>':''}`;t.classList.add('show');if(u)$('#tu').onclick=()=>{u();t.classList.remove('show')};clearTimeout(window._t);window._t=setTimeout(()=>t.classList.remove('show'),5000)}
+function delItem(b){const i=S.items.indexOf(b);S.items.splice(i,1);save();render();toast(`「${b.title}」を削除しました`,()=>{S.items.splice(i,0,b);save();render()})}
+function showMenu(a,e){const cm=$('#cm'),b=a.dataset.id?byId(a.dataset.id):null;cm._b=b;
+ const it=b?[['open','開く'],['edit','編集'],['copy','URLをコピー'],['dock',b.dock?'ドックから外す':'ドックに追加'],['hide',b.hid?'非表示を解除':'非表示にする'],['mode','ホーム画面を編集'],['del','削除',1]]:[['mode','ホーム画面を編集']];
+ cm.innerHTML=it.map(([k,t,d])=>`<button data-k="${k}"${d?' class="dg"':''}>${t}</button>`).join('');cm.style.display='block';
+ cm.style.left=Math.max(8,Math.min(e.clientX,innerWidth-230))+'px';cm.style.top=Math.max(8,Math.min(e.clientY,innerHeight-cm.offsetHeight-10))+'px'}
+document.addEventListener('pointerdown',e=>{if(!e.target.closest('#cm'))$('#cm').style.display='none'});
+$('#cm').addEventListener('click',e=>{const k=e.target.dataset.k;if(!k)return;const b=$('#cm')._b;$('#cm').style.display='none';
+ if(k=='mode')setEdit(true);else if(k=='open'){b.n++;save();window.open(b.url,'_blank','noopener')}else if(k=='edit')openEd(b);
+ else if(k=='copy'){try{navigator.clipboard.writeText(b.url);toast('URLをコピーしました')}catch(x){}}
+ else if(k=='dock'){b.dock=!b.dock;b.fold='';save();render()}else if(k=='hide'){b.hid=!b.hid;if(b.hid){b.dock=false;b.fold=''}save();render();$('#fov').classList.remove('show');toast(b.hid?'非表示フォルダに移動しました':'非表示を解除しました')}
+ else if(k=='del')delItem(b)});
+let ty=null;$('#pages').addEventListener('touchstart',e=>{const g=e.target.closest('.pg');ty=!edit&&g&&g.scrollTop<=0?e.touches[0].clientY:null},{passive:true});
+$('#pages').addEventListener('touchend',e=>{if(ty!=null&&e.changedTouches[0].clientY-ty>110)openSearch();ty=null});
+$('#dh').onclick=()=>$('#dhf').click();
+$('#dhf').onchange=e=>{const f=e.target.files[0];if(!f)return;f.text().then(t=>{const doc=new DOMParser().parseFromString(t,'text/html'),have=new Set(S.items.map(x=>x.url));let n=0;
+ doc.querySelectorAll('a[href^="http"]').forEach(a=>{if(n>=300||have.has(a.href))return;let host='';try{host=new URL(a.href).hostname.replace(/^www\./,'')}catch(x){}let hh=0;for(const c of host)hh+=c.charCodeAt(0);
+  const dl=a.closest('dl'),h=dl&&dl.previousElementSibling,it=D(a.textContent.trim()||host,a.href,'',COL[hh%COL.length],h&&h.tagName=='H3'?h.textContent.trim():'インポート');it.emoji=[...it.title][0]||'?';S.items.push(it);have.add(a.href);n++});
+ save();render();$('#dm').textContent=n+'件を追加しました。';e.target.value=''})};
+let pd=null;
+function clearFx(){document.querySelectorAll('.fdt,.ins').forEach(x=>x.classList.remove('fdt','ins'))}
+document.addEventListener('dragstart',e=>{e.preventDefault();e.stopPropagation()},true);
+document.addEventListener('click',e=>{if(Date.now()-(window._dg||0)<350){e.stopPropagation();e.preventDefault()}},true);
+document.addEventListener('pointerdown',e=>{if(!edit||e.button)return;const a=e.target.closest('.app');if(!a||e.target.closest('.mn'))return;pd={a,x:e.clientX,y:e.clientY}});
+document.addEventListener('pointermove',e=>{if(!pd)return;
+ if(!pd.g){if(Math.hypot(e.clientX-pd.x,e.clientY-pd.y)<8)return;const r=pd.a.getBoundingClientRect(),c=pd.a.cloneNode(true);c.classList.add('ghost');c.style.cssText=`position:fixed;left:${r.left}px;top:${r.top}px;width:${r.width}px;margin:0;z-index:60;pointer-events:none`;document.body.appendChild(c);pd.g=c;pd.ox=e.clientX-r.left;pd.oy=e.clientY-r.top;pd.a.style.opacity=.25}
+ pd.g.style.left=e.clientX-pd.ox+'px';pd.g.style.top=e.clientY-pd.oy+'px';
+ const el=document.elementFromPoint(e.clientX,e.clientY),t=el&&el.closest('.app,.hf');
+ if(t!==pd.t){clearTimeout(pd.tm);clearFx();pd.t=t;pd.fm=false;
+  if(t&&t!==pd.a){const hfo=t.classList.contains('hf'),ok=hfo||(!t.closest('#dock')&&!byId(t.dataset.id).fold);t.classList.add('ins');
+   if(ok)pd.tm=setTimeout(()=>{pd.fm=true;t.classList.remove('ins');t.classList.add('fdt')},hfo?0:350)}}
+ const x=e.clientX,n=Date.now();if((x<60||x>innerWidth-60)&&n-(pd.ft||0)>900){pd.ft=n;go(Math.max(0,Math.min($('#dots').children.length-1,page+(x<60?-1:1))))}});
+document.addEventListener('pointercancel',()=>{if(pd&&pd.g){pd.g.remove();pd.a.style.opacity=''}clearFx();pd=null});
+document.addEventListener('pointerup',e=>{if(!pd)return;const p=pd;pd=null;clearTimeout(p.tm);clearFx();if(!p.g)return;p.g.remove();p.a.style.opacity='';window._dg=Date.now();
+ const d=byId(p.a.dataset.id),el=document.elementFromPoint(e.clientX,e.clientY),t=el&&el.closest('.app,.hf');let open=null;
+ if(t&&t!==p.a&&t.classList.contains('hf')){d.fold=t.dataset.hf;d.dock=false}
+ else if(t&&t!==p.a){const b=byId(t.dataset.id);S.items=S.items.filter(x=>x!=d);
+  if(p.fm){b.fold=d.fold=b.fold||'新しいフォルダ';d.dock=false;open=d.fold;S.items.splice(S.items.indexOf(b)+1,0,d)}
+  else{const r=t.getBoundingClientRect();d.dock=b.dock;d.fold=b.dock?'':(b.fold||'');S.items.splice(S.items.indexOf(b)+(e.clientX>r.left+r.width/2?1:0),0,d)}}
+ else if(el&&el.closest('#dock')){d.dock=true;d.fold='';S.items=S.items.filter(x=>x!=d);S.items.push(d)}
+ else if(el&&el.closest('.pg')){const la=[...el.closest('.pg').querySelectorAll('.grid .app')].filter(x=>x.dataset.id!=d.id).pop(),b=la&&byId(la.dataset.id);S.items=S.items.filter(x=>x!=d);d.dock=false;d.fold='';if(b)S.items.splice(S.items.indexOf(b)+1,0,d);else S.items.push(d)}
+ else if(p.a.closest('#fpanel')&&!(el&&el.closest('#fpanel'))){d.fold='';$('#fov').classList.remove('show')}
+ save();render();if(open)setTimeout(()=>{openHF(open);const f=$('#fn');if(f){f.focus();f.select()}},60)});
+async function sha(t){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('ipadhome:'+t));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}
+function openHidden(){const show=()=>{const l=S.items.filter(b=>b.hid);$('#fpanel').innerHTML='<h3 style="margin:8px 0 18px">非表示</h3>'+(l.length?`<div class="res">${l.map(app).join('')}</div>`:'<div class="hint">非表示のブックマークはありません<br>長押しメニューか編集で追加できます</div>')};
+ $('#fov').classList.add('show');if(!S.o.pin){show();return}
+ $('#fpanel').innerHTML='<h3 style="margin:8px 0 6px">非表示</h3><div style="opacity:.7;font-size:14px">PINを入力してください</div><input class="fi" id="pin" type="password" inputmode="numeric" autocomplete="off" placeholder="••••"><div id="pe" style="height:20px;color:#ff6961;font-size:13px"></div><button class="pill pri" id="pok">解除</button>';
+ const pi=$('#pin'),chk=async(m)=>{if(pi.value.length<4)return;if(await sha(pi.value)==S.o.pin)show();else if(m){$('#pe').textContent='PINが違います';pi.value=''}};
+ pi.focus();pi.oninput=()=>chk(false);pi.onkeydown=e=>{if(e.key=='Enter')chk(true)};$('#pok').onclick=()=>chk(true)}
+function gsGo(v){v=v.trim();if(!v)return;window.open(/^(https?:\/\/)?[\w-]+(\.[\w-]+)+(\/\S*)?$/i.test(v)?fixUrl(v):'https://www.google.com/search?q='+encodeURIComponent(v),'_blank','noopener')}
+document.addEventListener('keydown',e=>{if(e.target.id=='gsq'&&e.key=='Enter'&&!e.isComposing){gsGo(e.target.value);e.target.value=''}});
+document.addEventListener('click',e=>{const b=e.target.closest('#gmic,#glens');if(!b)return;
+ if(b.id=='glens'){window.open('https://lens.google.com/','_blank','noopener');return}
+ const R=window.SpeechRecognition||window.webkitSpeechRecognition;if(!R){toast('このブラウザは音声入力に対応していません');return}
+ const r=new R();r.lang='ja-JP';r.onresult=ev=>{const v=ev.results[0][0].transcript;$('#gsq').value=v;gsGo(v)};r.onerror=()=>toast('音声入力できませんでした');r.start();toast('話してください…')});
+const hf=n=>{const l=S.items.filter(b=>!b.dock&&b.fold==n);return`<div class="hf" data-hf="${esc(n)}" tabindex="0" role="button"><div class="ft glass">${l.slice(0,9).map(ic).join('')}</div><span>${esc(n)}</span></div>`};
+function openHF(n){const l=S.items.filter(b=>!b.dock&&b.fold==n);
+ $('#fpanel').innerHTML=(edit?`<input class="fi" id="fn" value="${esc(n)}" aria-label="フォルダ名">`:`<h3 style="margin:8px 0 18px">${esc(n)}</h3>`)+`<div class="res">${l.map(app).join('')}</div>`;
+ $('#fov').classList.add('show');
+ if(edit)$('#fn').onchange=e=>{const v=e.target.value.trim();S.items.forEach(b=>{if(b.fold==n)b.fold=v});save();$('#fov').classList.remove('show');render()}}
+$('#sz').value=Math.round((S.sc||1)*100);
+$('#sz').oninput=e=>{S.sc=e.target.value/100;save();clearTimeout(window._z);window._z=setTimeout(render,60)};
+document.addEventListener('pointermove',e=>{const g=e.target.closest('.glass');if(!g)return;const r=g.getBoundingClientRect();g.style.setProperty('--mx',(e.clientX-r.left)/r.width*100+'%');g.style.setProperty('--my',(e.clientY-r.top)/r.height*100+'%')});
+function launch(a){const c=a.querySelector('.ic');if(!c||matchMedia('(prefers-reduced-motion:reduce)').matches)return;const r=c.getBoundingClientRect(),d=document.createElement('div');
+ d.style.cssText=`position:fixed;z-index:50;pointer-events:none;left:${r.left}px;top:${r.top}px;width:${r.width}px;height:${r.height}px;border-radius:23%;background:${c.style.background||'#222'}`;
+ document.body.appendChild(d);d.animate([{transform:'scale(1)',opacity:1},{transform:`scale(${Math.max(innerWidth,innerHeight)/r.width*1.4})`,opacity:0}],{duration:520,easing:'cubic-bezier(.3,.7,.2,1)'}).onfinish=()=>d.remove()}
+render();document.body.classList.add('boot');
+document.querySelectorAll('.grid .app,.hf').forEach((a,i)=>a.style.animationDelay=i*28+'ms');
+setTimeout(()=>{document.body.classList.remove('boot');document.querySelectorAll('.app,.hf').forEach(a=>a.style.animationDelay='')},1900);
+</script></body></html>
